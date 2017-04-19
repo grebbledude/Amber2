@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "amber-light",
+  "private_key_id": "6890e53e7ab373b0df3205639130a0d568838bef",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvwIBADANBgkqhkiG9w0BAQEFAASCBKkwggSlAgEAAoIBAQC/2kiPefcq7Zze\nzqISddCBuf8eOe14jXzRwiolXv04hB5+x1JhRRNosrbCIqhwBtk87hKhu1s83pLN\nrnjEiyJNvXFTtiu4EN1Xh3qrgLGosqnNse3aAMVcWlXx222n4CvznLkw1RBtio/n\n+Esgg1iFFI+Trd2be6MRhexucumzpsLh9qeULTtLgkCER7psf05c61y0w1WbHjpx\nr2ZZ6K2XGv8f1A8cNG8sNnUB3lkAbZeB4txFCVHvCqhp60M14VOqbVNb2XiQRAMf\nRAkLZ+8GhcjoKoUA1YpGTcYlKWq2QU44id6xCySjWo/ZikVx6v2k4MNQ8F/VPw2Z\nAoWKDl9HAgMBAAECggEBAKfYWNLtaYhtCWkEblaoLBrSlpfjJhbp8eGxdR3s1Ky1\nKdjQmQnwXOKkN6/wklwwIa5kung0acX/E4BOu+l3sDNDIfqSzfzjBEKnjHKuzL9C\nT7xdhjHLqt75SWenCXBtdwZSftJyFUVAjFXtrAxt3OvQ6SvSWKbGrAuQlyCp+Dvq\nij547oqojIqBP7YDrRS3C/dwqj0aNvuiEbBFbmGh70/PZXlpPh51Zn46wvPYalyI\nAaJJ/0pyUifoBXU5l9yBeS4EUg5Urynwr2LrUgtYPbjKtMf4SSQDPgyXl5pYmMai\nq/8q6+8WXz2q19lTTQ6nfkPdT1muUmJchH4b41YwcMECgYEA/NimrZIjahJx6+A8\njcOHrOpqWMB/iIJXrh2/RNyNOTO6qqWJxsy1nLNFKjImTsA38rICXzqGSCzDncHA\nUbBZIuDcV3n9RE0V9XLh1NVtUVq1Y5zUp1uj9bP6iyKyE0+lbf8uhx8OHb2jIwAM\n489sJ6AYeGdpMD/2f7JXfc1MEsUCgYEAwj7gi7n/JArRNGzgwwlRyHWgZ7phNzFP\nXWsEPy0zqL6uNcqOnZLhxzRkRGyC7vmU/JmIHKaP6Ye5UcAjvby2WacJdvWC6stF\nX0abebn8t/S3FODVahMCx2adggLJaQywJxU2t0n30cPGHe1V6zd10BMEtxxCg+nM\n0+9PeawrGpsCgYEA8Paj+jyQhZEogovECbJzRaZtTUG/COB3IRd2ZfDuobobxm9W\nW2BSIBF0896xRVHIwAFHY2vJ91S55El2uCMg/61eL/uxE3uHVtBySjxQHz0cKt+W\nhhw+qHUqa5jYLrEzzh1oQRumf09v/nYY0q6luynGyFB9HZ+HknDrEpgpTKUCgYEA\nujpuLYf1BSkZyZlZI6QbtISRdOFLsw6jeHzRZYCAtpeZjhjVAl1/+OxR9QfTwCmo\nnUTVKiLGdq6ZDbeYjKAQc4Ohn1tiWJjpuZ6IEPwvPm5v2KR192yijWnkOHFTiFOR\nzuaXvsI7xfBcUPTqGsjhOswBCU0euDm/FrGpEI3wBWECgYBeALF01DCn07t4bATR\nTHkSbi4nVG+8Xuz4iC3XkPYfaO1jvmzRVuiWtoX8jcJaIhdu1sFq3dPUadZwdCgV\nGV6Y67H/aFuOpcZT0hoS0MFRcIwhOVgJGlLCt7/Gls/b/bLM9KfvVcelLiqbx1zU\nsZIH1ZJ1OfNVlYirQJPfyCDm/w==\n-----END PRIVATE KEY-----\n",
+  "client_email": "firebase-crashreporting-f1t51@amber-light.iam.gserviceaccount.com",
+  "client_id": "102915690487590146730",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://accounts.google.com/o/oauth2/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/firebase-crashreporting-f1t51%40amber-light.iam.gserviceaccount.com"
+}

@@ -1,0 +1,39 @@
+<main>
+    <question id="1"> </question>
+    <question id="2"> </question>
+    <question id="3"> </question>
+    
+    <question amber="y" init="y" id="4"
+        text = "How frequently do you eat chocolate>">
+        <answer id="1"
+        text="Once a week"/>
+        <answer id="2"
+        text="twice a week"/>
+        <answer id="3"
+        text="moe than twice a month"/>
+        <answer id="4"
+        text="less than once a week"/>
+    </question>
+    
+    <question amber="y" init="y" id="5"
+        text = "Have you bought any chocolate in the last 24 hours">
+        <answer id="1"
+        text="yes"/>
+        <answer id="2"
+        text="no"/>
+    </question>
+    <question amber="y" red="y" id="6" multi="y"
+        text = "What has tempted you in the last 24 hours">
+        <answer id="1"
+        text="Mars bars"/>
+        <answer id="2"
+        text="Cadbury dairy milk"/>
+        <answer id="3"
+        text="Snickers"/>
+        <answer id="4"
+        text="Posh Belgian chocolates"/>
+        <answer id="5"
+        text="Chili chocolate"/>
+    </question>
+</main>
+
