@@ -45,8 +45,8 @@ class DebugController: UIViewController, UITableViewDataSource, UITableViewDeleg
         self.tableView.dataSource = self
         self.tableView.delegate = self
         mExpanded = [false, false, false, false, false]
-//        tableView!.rowHeight = UITableViewAutomaticDimension
-//        tableView!.estimatedRowHeight = 50
+        tableView!.rowHeight = UITableViewAutomaticDimension
+        tableView!.estimatedRowHeight = 50
     }
 
     override func didReceiveMemoryWarning() {
@@ -63,7 +63,6 @@ class DebugController: UIViewController, UITableViewDataSource, UITableViewDeleg
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        print("getting section rows \(mExpanded![0])")
         if mExpanded![section] {
             switch section {
             case 0:
@@ -134,15 +133,8 @@ class DebugController: UIViewController, UITableViewDataSource, UITableViewDeleg
             }
             return cell
         }
-        let cell: UITableViewCell = {
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: "DebugDetail") else {
-                // Never fails:
-                print ("shouldn't do this")
-                return UITableViewCell(style: .subtitle, reuseIdentifier: "UDebugDetail")
-                
-            }
-            return cell
-        }()
+        let cell = tableView.dequeueReusableCell(withIdentifier: "DebugDetail") as! DebugDetailCell
+   
         var line1: String?
         var line2: String?
 
@@ -166,8 +158,8 @@ class DebugController: UIViewController, UITableViewDataSource, UITableViewDeleg
             line1 = ""
             line2 = ""
         }
-        cell.textLabel!.text = line1
-        cell.detailTextLabel?.text = line2
+        cell.line1Label.text = line1
+        cell.line2Label.text = line2
         return cell
     }
 
@@ -213,5 +205,12 @@ class DebugHeaderCell: UITableViewCell {
         self.delegate?.sectionHeaderView(expanded: expanded, section: self.section!)
         
     }
+    
+}
+class DebugDetailCell: UITableViewCell {
+    
+    @IBOutlet weak var line1Label: UILabel!
+    @IBOutlet weak var line2Label: UILabel!
+
     
 }

@@ -85,12 +85,21 @@ Lockable {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt: IndexPath) {
-        //let cell = tableView.cellForRow(at: didSelectRowAt)
-        //cell?.accessoryType = .checkmark
+        let cell = tableView.cellForRow(at: didSelectRowAt)
+        cell?.accessoryType = .checkmark
+        Theme.setCellLayer(view: cell!, selected: true)
         sendButton.isEnabled = true
         
     }
-    
+    func tableView(_ tableView: UITableView, didDeselectRowAt: IndexPath) {
+        let cell = tableView.cellForRow(at: didDeselectRowAt)
+        cell?.accessoryType = .none
+        Theme.setCellLayer(view: cell!, selected: false)
+    }
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        cell.backgroundColor = .clear
+        
+    }
     /*
      // MARK: - Navigation
      

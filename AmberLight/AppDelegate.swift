@@ -19,12 +19,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
     let gcmMessageIDKey = "gcm.message_id"
     var mForeground = true
-
+    private enum NotificationAuth {
+        case ok
+        case refused
+        case waiting
+    }
+    private var mNotificationsAuth = NotificationAuth.waiting
     
     
     func application(_ application: UIApplication,
                      didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-        FIRApp.configure()
+        FirebaseApp.configure()
         
         let status = MyPrefs.getPrefString(preference: MyPrefs.CURRENT_STATUS)
         //  If this is the first time then do the intialisations
@@ -32,27 +37,25 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             AppDelegate.initialiseDB()
         }
         
-
-        // Register for remote notifications. This shows a permission dialog on first run, to
-        // show the dialog at a more appropriate time move this registration accordingly.
-        // [START register_for_notifications]
+ 
         if #available(iOS 10.0, *) {
-            let authOptions: UNAuthorizationOptions = [.alert, .badge, .sound]
-            UNUserNotificationCenter.current().requestAuthorization(
-                options: authOptions,
-                completionHandler: {_, _ in })
+
             
             // For iOS 10 display notification (sent via APNS)
             UNUserNotificationCenter.current().delegate = self
             // For iOS 10 data message (sent via FCM)
-            FIRMessaging.messaging().remoteMessageDelegate = self
+            Messaging.messaging().delegate = self
             
         } else {
+            mNotificationsAuth = .ok
             let settings: UIUserNotificationSettings =
-                UIUserNotificationSettings(types: [.alert, .badge, .sound], categories: nil)
+                UIUserNotificationSettings(types: [.alert, .sound], categories: nil)
             application.registerUserNotificationSettings(settings)
+  //          setupInitialScreen()
+            
         }
-        
+        swizzling(UIViewController.self)
+ //       _ = Theme()
         application.registerForRemoteNotifications()
         
         // [END register_for_notifications]
@@ -60,16 +63,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         // Decide which is the initial screen
         
-        setupInitialScreen()
         
         // Add observer for InstanceID token refresh callback.
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(self.tokenRefreshNotification),
-                                               name: .firInstanceIDTokenRefresh,
+                                               name: .InstanceIDTokenRefresh,
                                                object: nil)
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(self.sendDataMessageFailure),
-                                               name: .FIRMessagingSendError,
+                                               name: .MessagingSendError,
                                                object: nil)
         
         // and abservers for status changes
@@ -78,15 +80,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         NotificationCenter.default.addObserver(self, selector: #selector(self.didEnterBackground),
                                                name:.UIApplicationDidEnterBackground, object: nil)
         
-        if let token = FIRInstanceID.instanceID().token() {
-            print (token)
-        }
+
 
         //  Make sure that we have the necessary reminders set
 
         AppDelegate.setupNotifications()
 
-        
+        FirebaseSignon.connect()
         
 
         return true
@@ -97,7 +97,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func applicationWillEnterForeground(_ application: UIApplication) {
         // Called as part of the transition from the background to the active state; here you can undo many of the changes made on entering the background.
-        print("State change: Application will enter foreground")
+
 
         NotificationCenter.default.addObserver(self, selector: #selector(self.didEnterBackground),
                                                name:.UIApplicationDidEnterBackground, object: nil)
@@ -113,7 +113,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 
     func applicationWillResignActive(_ application: UIApplication) {
-        print("State change: Application will resign active")
         let ts = Date().timeIntervalSinceReferenceDate
         MyPrefs.setPref(preference: MyPrefs.LAST_UNLOCK, value: String(ts))
     }
@@ -123,7 +122,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         * we can release the data now
         */
         
-        print("State change: did Enter Background")
         mForeground = false
         NotificationCenter.default.removeObserver(self, name: .UIApplicationDidEnterBackground, object: nil)
         NotificationCenter.default.removeObserver(self, name: .UIApplicationDidBecomeActive, object: nil)
@@ -134,7 +132,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     func applicationWillTerminate(_ application: UIApplication) {
         
-        print("State change: Application will terminate")
         NotificationCenter.default.removeObserver(self, name: .UIApplicationDidEnterBackground, object: nil)
         NotificationCenter.default.removeObserver(self, name: .UIApplicationDidBecomeActive, object: nil)
     }
@@ -157,15 +154,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationDidBecomeActive(_ application: UIApplication) {
         
-        print("State change: Application did become active")
         connectToFcm()
     }
     // [START disconnect_from_fcm]
     func applicationDidEnterBackground(_ application: UIApplication) {
         
-        print("State change: Application did enter background")
-        FIRMessaging.messaging().disconnect()
-        print("Disconnected from FCM.")
+  //      Messaging.messaging().disconnect()
+        Messaging.messaging().shouldEstablishDirectChannel = false
     }
     // [END disconnect_from_fcm]
     //                  MARK:  On application start
@@ -173,7 +168,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
 
     // Switch the initial screen depending on status
-    private func setupInitialScreen() {
+    public func setupInitialScreen() {
+        let showLog = MyPrefs.getPrefBool(preference: MyPrefs.SHOW_LOG)
+        if showLog {
+            AppDelegate.setupNavigation(target: "logtable", storyboard: .Registration)
+            return
+        }
         let status = MyPrefs.getPrefString(preference: MyPrefs.CURRENT_STATUS)
         let isTl = MyPrefs.getPrefBool(preference: MyPrefs.I_AM_TEAMLEAD)
         let isAdmin = MyPrefs.getPrefBool(preference: MyPrefs.I_AM_ADMIN)
@@ -185,7 +185,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                     AppDelegate.setupNavigation(target: "Teamlead", storyboard: .Maintenance)
                 }
             } else {
-                AppDelegate.setupNavigation(target: "Waiting", storyboard: .Registration)
+                AppDelegate.setupNavigation(target: "Registration", storyboard: .Registration)
             }
         }
         else {
@@ -212,7 +212,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let viewController = storyboard.instantiateViewController(withIdentifier: target)
         // navigationController.pushViewController(viewController, animated: false)
         navigationController.setViewControllers([viewController], animated: false)
-    }
+        // Theme.layerGradient(viewController: navigationController)
+    } 
     static func setupNotifications() {
         if (MyPrefs.getPrefBool(preference: MyPrefs.I_AM_TEAMLEAD)
             || MyPrefs.getPrefBool(preference: MyPrefs.I_AM_ADMIN)) {
@@ -226,11 +227,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
   //  handle data mand notification essages
     func processDataNotification (dataMessage: [AnyHashable: Any]){
         //  The first test should always be true
-        print ("process notification")
         if UIApplication.shared.applicationState == .inactive {
-            print ("was inactive") // Was inactive and user clicked on the message.  Don't display the message
-            // but what happens if it was data and notification???
-  //          xx
+
             return // already handled
         }
         if let aps = dataMessage["aps"] as? [AnyHashable: Any] {
@@ -239,7 +237,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             // but a notification will trigger again if we click on it.
             
             if let contentAvailable = aps["content-available"] as? String {
-                print ("found content \(contentAvailable)")
                 if ( contentAvailable == "1" ) {
                     var fcmMessage: [String : String] = [:]
                     //  Data arrives as Object:Object.  Nede to convert to Strings.
@@ -260,7 +257,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 let alertController = UIAlertController(title: msg["title"], message: msg["body"], preferredStyle: .alert)
                 let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
                 alertController.addAction(okAction)
-                print("Doing a pop up alert")
                 self.window?.rootViewController?.present(alertController, animated: true, completion: nil)
             }
         }
@@ -272,24 +268,22 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didReceive notification: UILocalNotification) {
         // This seems to trigger either when the application is foreground or when the user clicks on the notification
         // if the app was in the background
-        print ("local notification")
-        if application.applicationState == .inactive {
-            print ("was inactive")
-        }
+//        if application.applicationState == .inactive {
+  //      }
     }
     @objc func sendDataMessageFailure(_ notification: NSNotification){
-        print ("got an error \(notification)")
+   //     print ("got an error \(notification)")
 
     }
 
     func application(_ application: UIApplication, didRegister notificationSettings: UIUserNotificationSettings) {
-        print("Hooray! I'm registered!")
+
     }
     // [START refresh_token]
     func tokenRefreshNotification(_ notification: Notification) {
-        if let refreshedToken = FIRInstanceID.instanceID().token() {
-            print("InstanceID token: \(refreshedToken)")
-        }
+//        if let refreshedToken = FIRInstanceID.instanceID().token() {
+//            print("InstanceID token: \(refreshedToken)")
+//        }
         
         // Connect to FCM since connection may have failed when attempted before having a token.
         connectToFcm()
@@ -299,29 +293,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable: Any]) {
         // If you are receiving a notification message while your app is in the background,
         // this callback will not be fired till the user taps on the notification launching the application.
-        // TODO: Handle data of notification
-        // Print message ID.
-        if let messageID = userInfo[gcmMessageIDKey] {
-            print("First option Message ID: \(messageID)")
-        }
+   
+
         processDataNotification(dataMessage: userInfo)
-        // Print full message.
-        print(userInfo)
+
     }
     
     func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable: Any],
                      fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
         // If you are receiving a notification message while your app is in the background,
         // this callback will not be fired till the user taps on the notification launching the application.
-        // TODO: Handle data of notification
-        // Print message ID.
-        if let messageID = userInfo[gcmMessageIDKey] {
-            print("Second option Message ID: \(messageID)")
-        }
+
+
         processDataNotification(dataMessage: userInfo)
-        // Print full message.
-        print(userInfo)
-        
         
         completionHandler(UIBackgroundFetchResult.newData)
     }
@@ -330,32 +314,38 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     // [START connect_to_fcm]
     func connectToFcm() {
         // Won't connect since there is no token
-        guard FIRInstanceID.instanceID().token() != nil else {
+        guard InstanceID.instanceID().token() != nil else {
             return;
         }
         
         // Disconnect previous FCM connection if it exists.
-        FIRMessaging.messaging().disconnect()
+   //     Messaging.messaging().disconnect()
+        Messaging.messaging().shouldEstablishDirectChannel = false
+        Messaging.messaging().shouldEstablishDirectChannel = true
         
-        FIRMessaging.messaging().connect { (error) in
-            if error != nil {
-                print("Unable to connect with FCM. \(error!)")
-            } else {
-                print("Connected to FCM.")
-            }
-        }
+//        Messaging.messaging().connect { (error) in
+    //        if error != nil {
+    //            print("Unable to connect with FCM. \(error!)")
+    //        } else {
+    //            print("Connected to FCM.")
+    //        }
+//        }
     }
     // [END connect_to_fcm]
     func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
-        print("Unable to register for remote notifications: \(error.localizedDescription)")
+//        print("Unable to register for remote notifications: \(error.localizedDescription)")
     }
     
 
     func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
 
         //Followwing line should only be required if swizzling disabled.
-        FIRInstanceID.instanceID().setAPNSToken(deviceToken, type: FIRInstanceIDAPNSTokenType.unknown)
-        print("Set APNS token")
+ //       InstanceID.instanceID().setAPNSToken(deviceToken, type: InstanceIDAPNSTokenType.unknown)
+ //       InstanceID.instanceID().APNSToken
+ //       Messaging.messaging().setAPNSToken(deviceToken, type: .unknown)
+        Messaging.messaging().apnsToken = deviceToken
+        
+//        print("Set APNS token")
     }
     
 
@@ -393,13 +383,9 @@ extension AppDelegate : UNUserNotificationCenterDelegate {
                                 willPresent notification: UNNotification,
                                 withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
         let userInfo = notification.request.content.userInfo
-        // Print message ID.
-        if let messageID = userInfo[gcmMessageIDKey] {
-            print("Third option Message ID: \(messageID)")
-        }
+
         
-        // Print full message.
-        print(userInfo)
+
         processDataNotification(dataMessage: userInfo)
         
         // Change this to your preferred presentation option
@@ -410,13 +396,8 @@ extension AppDelegate : UNUserNotificationCenterDelegate {
                                 didReceive response: UNNotificationResponse,
                                 withCompletionHandler completionHandler: @escaping () -> Void) {
         let userInfo = response.notification.request.content.userInfo
-        // Print message ID.
-        if let messageID = userInfo[gcmMessageIDKey] {
-            print("Fourth option Message ID: \(messageID)")
-        }
-        
-        // Print full message.
-        print(userInfo)
+ 
+
         processDataNotification(dataMessage: userInfo)
         completionHandler()
     }
@@ -455,7 +436,8 @@ extension AppDelegate : UNUserNotificationCenterDelegate {
             let trigger = UNTimeIntervalNotificationTrigger(timeInterval: alarmInterval, repeats: false)
             let request = UNNotificationRequest(identifier: key, content: content, trigger: trigger)
             center.add(request) { (error) in
-                print(error!)
+                FirebaseCrashMessage("Got an error in notification \(error!)")
+                fatalError()
             }
         }
     }
@@ -463,14 +445,14 @@ extension AppDelegate : UNUserNotificationCenterDelegate {
 
 // [END ios_10_message_handling]
 // [START ios_10_data_message_handling]
-extension AppDelegate : FIRMessagingDelegate {
+extension AppDelegate : MessagingDelegate {
     // Receive data message on iOS 10 devices while app is in the foreground.
-    func applicationReceivedRemoteMessage(_ remoteMessage: FIRMessagingRemoteMessage) {
-        print ("IOS 10 option)")
-        print(remoteMessage.appData)
-        print ("This never seems to happen - so we will deliberately dump.  Application recevied remote message")
-        let x = min(1, 0)
-        _ = 1/x
+    func application(received remoteMessage: MessagingRemoteMessage) {
+        FirebaseCrashMessage("Application received remote message called.  Not sure what this means so dumping")
+        fatalError()
+    }
+    func messaging(_ messaging: Messaging, didRefreshRegistrationToken fcmToken: String) {
+        
     }
 }
 // [END ios_10_data_message_handling]

@@ -8,6 +8,7 @@
 
 import UIKit
 import UserNotifications
+import FirebaseCrash
 
 class NotificationHandler {
     static public let DAY = 24 * 3600.0
@@ -15,24 +16,26 @@ class NotificationHandler {
         let status = MyPrefs.getPrefString(preference: MyPrefs.CURRENT_STATUS)
         if (status == MyPrefs.STATUS_ACTIVE  || status == MyPrefs.STATUS_GR_ASSIGN
                 || status == MyPrefs.STATUS_ANON  || status == MyPrefs.STATUS_ANON_DONE) {
-            let startDate: Int = {
+            let startDate: Int = {  // either anon_start or startdate
                 if MyPrefs.getPrefInt(preference: MyPrefs.ANON_START) > 0 {
                     return MyPrefs.getPrefInt(preference: MyPrefs.ANON_START)
                 } else {
                     return MyPrefs.getPrefInt(preference: MyPrefs.STARTDATE)
                 }
             }()
-            print ("checking notifications for \(startDate)")
+
             var timeS = CheckInController.getCalDate(date: startDate).timeIntervalSinceReferenceDate
             let maxTime = timeS + (41 * NotificationHandler.DAY)
             let currentTimeS = Date().timeIntervalSinceReferenceDate
             let dayDiff = Int(floor((currentTimeS - timeS) / NotificationHandler.DAY))
             switch dayDiff {
             case -10 ... -2:
+                // This is pre - checkin
                 let days = max(-2,dayDiff + 1)  // This will either be -1 or -2 now
                 timeS = timeS + Double(days) * DAY  // days is negative
                 scheduleNotification(key: "Soon", title: "Amber Light", body: "First checkin in \(days) days time", at: Date(timeIntervalSinceReferenceDate: timeS), withSound: false)
             case -1 ... 39 :
+                // This is during the checkin period
                 var baseTime = timeS + (Double(dayDiff) * NotificationHandler.DAY)
                 //  Base time is the 18:00 time for the current checkin day.  That might be yesterday in
                 // normal speak, or may be before the actual start date.
@@ -61,8 +64,6 @@ class NotificationHandler {
                         let body =  "Time to check in"
                         let title = "Amber Light"
                         if time < maxTime {
-                            let dx = Date(timeIntervalSinceReferenceDate: time)
-                            print("Am about to schedule at " + dx.description)
                             scheduleNotification(key: "Checkin" + String(i), title: title, body: body, at: Date(timeIntervalSinceReferenceDate: time), withSound:  sound)
                         }
                     }
@@ -117,18 +118,17 @@ class NotificationHandler {
         if withSound {
             content.sound = UNNotificationSound.default()
         }
-        let ct = Date()
-        let ctC = ct.timeIntervalSinceReferenceDate
-        let tt = date.timeIntervalSinceReferenceDate
+ 
         let current = Date().timeIntervalSinceReferenceDate   // Current date in seconds since ref date
         let triggerTime = date.timeIntervalSinceReferenceDate - current  //  Time between now and target time
-        print (ct, ctC, date, tt, triggerTime)
         let trigger = UNTimeIntervalNotificationTrigger(timeInterval: triggerTime, repeats: false)
         let request = UNNotificationRequest(identifier: key, content: content, trigger: trigger) // Schedule the notification.
 
         center.add(request) {(error) in
             if let error = error {
-                print("Uh oh! We had an error: \(error)")
+                FirebaseCrashMessage("Error in notification scheduling \(error)")
+                fatalError()
+                
             }
         }
     }

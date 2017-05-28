@@ -9,7 +9,7 @@
 import Foundation
 
 class UnfinishStuff {
-    public static func notification () {
+ /*   public static func notification () {
         
     }
     public static func download () {
@@ -20,5 +20,5 @@ class UnfinishStuff {
 //    }
     public static func timers () {
         
-    }
+    } */
 }

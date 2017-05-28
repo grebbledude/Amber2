@@ -32,6 +32,7 @@ class ListPersonController: UIViewController, UITableViewDelegate, UITableViewDa
     private let mDBT = DBTables()
     private var mSelectedRow: Int?
     private var mId = ""
+    private var mRefreshed: Bool!
     
     public static let PEOPLE_RETURN = "peopleReturn"
 
@@ -42,9 +43,18 @@ class ListPersonController: UIViewController, UITableViewDelegate, UITableViewDa
 
         tableView.delegate = self
         tableView.dataSource = self
+        getPeople()
+        mRefreshed = true
+ //       clearNavBar()
+        tableView.tableFooterView = UIView(frame: CGRect.zero)
+        tableView.rowHeight = UITableViewAutomaticDimension
+        tableView.estimatedRowHeight = 140
     }
     override func viewWillAppear(_ animated: Bool) {
-        getPeople()
+        if !mRefreshed {
+            refreshData()
+        }
+        mRefreshed = false
     }
 
     override func didReceiveMemoryWarning() {
@@ -57,6 +67,7 @@ class ListPersonController: UIViewController, UITableViewDelegate, UITableViewDa
     func refreshData() {
         getPeople()
         tableView!.reloadData()
+        mRefreshed = true
     }
     func releaseData() {
         mPersonTables = nil
@@ -64,17 +75,15 @@ class ListPersonController: UIViewController, UITableViewDelegate, UITableViewDa
     
     // MARK: Table View
     func numberOfSections(in tableView: UITableView) -> Int{
-        print("got sections")
+
         return 1
     }
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int{
-        print (" Rows in section" + String ( mPersonTables!.count))
         
         return  mPersonTables!.count
         //return 90
     }
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell{
-        print ("getting cell")
         // Table view cells are reused and should be dequeued using a cell identifier.
 
         let cellIdentifier = "personCell"
@@ -83,14 +92,17 @@ class ListPersonController: UIViewController, UITableViewDelegate, UITableViewDa
         cell.id.text = person.id
         cell.name.text = person.name
         cell.pseudonym.text = person.pseudonym
-        cell.status.text = person.status
+        cell.status.text = person.formatStatus
         return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt: IndexPath) {
         //let cell = tableView.cellForRow(at: didSelectRowAt)
         //cell?.accessoryType = .checkmark
-        mSelectedRow = didSelectRowAt.row
+        let row = didSelectRowAt.row
+        
+        mId = mPersonTables![row].id
+        performSegue(withIdentifier: ListPersonController.PEOPLE_MAINT, sender: self)
         
     }
     func tableView(_ tableView: UITableView, didDeselectRowAt: IndexPath) {
@@ -98,7 +110,10 @@ class ListPersonController: UIViewController, UITableViewDelegate, UITableViewDa
         //cell?.accessoryType = .none
         
     }
-    
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        cell.backgroundColor = .clear
+        
+    }
     /*
      // MARK: - Navigation
      
@@ -119,7 +134,6 @@ class ListPersonController: UIViewController, UITableViewDelegate, UITableViewDa
     override func dismiss(animated flag: Bool, completion: (() -> Void)? = nil) {
         getPeople()
         tableView.reloadData()
-        print("reloading data")
         super.dismiss(animated: flag, completion: completion)
     }
     @IBAction func unwindToMainListSegue (sender: UIStoryboardSegue) {

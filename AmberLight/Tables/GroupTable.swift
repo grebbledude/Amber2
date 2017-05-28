@@ -33,6 +33,21 @@ final class GroupTable: TableHelper {
 
     public var id, status, desc: String!
     public var startdate, members: Int!
+    public var formatStatus: String {
+        get  {
+            if let stat = status {
+                switch stat {
+                case GroupTable.STATUS_BUILD: return "build"
+                case GroupTable.STATUS_WAIT: return "waiting"
+                case GroupTable.STATUS_ACTIVE: return "active"
+                case GroupTable.STATUS_OLD: return "old"
+                default: return "new"
+                }
+            } else {
+                return "new"
+            }
+        }
+    }
     
     
     

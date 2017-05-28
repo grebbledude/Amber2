@@ -39,13 +39,17 @@ class ListGroupController: UIViewController, UITableViewDelegate, UITableViewDat
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        print("groups did load")
 
 
         getGroups()
  
         tableView.delegate = self
         tableView.dataSource = self
+ //       clearNavBar()
+        tableView.tableFooterView = UIView(frame: CGRect.zero)
+        tableView.rowHeight = UITableViewAutomaticDimension
+        tableView.estimatedRowHeight = 140
+
     }
 
     override func didReceiveMemoryWarning() {
@@ -60,17 +64,14 @@ class ListGroupController: UIViewController, UITableViewDelegate, UITableViewDat
     
     // MARK: Table View
     func numberOfSections(in tableView: UITableView) -> Int{
-        print("got sections")
         return 1
     }
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int{
-        print (" Rows in section" + String (mGroupTables!.count ))
         
         return mGroupTables!.count
         //return 90
     }
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell{
-        print ("getting cell")
         // Table view cells are reused and should be dequeued using a cell identifier.
 
         let cellIdentifier = "groupCell"
@@ -79,7 +80,7 @@ class ListGroupController: UIViewController, UITableViewDelegate, UITableViewDat
         cell.id.text = group.id
         cell.name.text = group.desc
         cell.members.text = String(group.members)
-        cell.status.text = group.status
+        cell.status.text = group.formatStatus
         return cell
 
         
@@ -89,12 +90,22 @@ class ListGroupController: UIViewController, UITableViewDelegate, UITableViewDat
     func tableView(_ tableView: UITableView, didSelectRowAt: IndexPath) {
         //let cell = tableView.cellForRow(at: didSelectRowAt)
         //cell?.accessoryType = .checkmark
-        mSelectedRow = didSelectRowAt.row
+       let row = didSelectRowAt.row
+        
+        mId = mGroupTables![row].id
+        performSegue(withIdentifier: ListGroupController.GROUP_MAINT, sender: self)
         
     }
     func tableView(_ tableView: UITableView, didDeselectRowAt: IndexPath) {
         //let cell = tableView.cellForRow(at: didDeselectRowAt)
         //cell?.accessoryType = .none
+        
+    }
+//    override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+    //    cell.backgroundColor = .clear
+   // }
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        cell.backgroundColor = .clear
         
     }
 
@@ -119,7 +130,6 @@ class ListGroupController: UIViewController, UITableViewDelegate, UITableViewDat
     override func dismiss(animated flag: Bool, completion: (() -> Void)? = nil) {
         getGroups()
         tableView.reloadData()
-        print("reloading data")
         super.dismiss(animated: flag, completion: completion)
     }
     @IBAction func unwindToMainListSegue (sender: UIStoryboardSegue) {

@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="16E195" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="01J-lp-oVM">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12118" systemVersion="16E195" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="01J-lp-oVM">
     <device id="retina3_5" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
-        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12086"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -22,53 +21,25 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="amber" translatesAutoresizingMaskIntoConstraints="NO" id="aGg-on-NL1">
-                                <rect key="frame" x="16" y="28" width="288" height="160.5"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" secondItem="aGg-on-NL1" secondAttribute="height" multiplier="343:191" id="RvF-2w-Bj2"/>
-                                </constraints>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Splash" translatesAutoresizingMaskIntoConstraints="NO" id="b5f-f1-G7n">
+                                <rect key="frame" x="50" y="28" width="220" height="444"/>
                             </imageView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="The Amber Light Project" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kMb-LB-PRT">
-                                <rect key="frame" x="16" y="196.5" width="288" height="263.5"/>
-                                <fontDescription key="fontDescription" name="PartyLetPlain" family="Party LET" pointSize="75"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                                <variation key="widthClass=regular">
-                                    <fontDescription key="fontDescription" name="PartyLetPlain" family="Party LET" pointSize="150"/>
-                                </variation>
-                            </label>
                         </subviews>
-                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="kMb-LB-PRT" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leadingMargin" id="8Qk-Z5-rDb"/>
-                            <constraint firstItem="kMb-LB-PRT" firstAttribute="trailing" secondItem="Ze5-6b-2t3" secondAttribute="trailingMargin" id="Fgd-XY-HQu"/>
-                            <constraint firstItem="aGg-on-NL1" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leadingMargin" id="IDX-Xd-JMp"/>
-                            <constraint firstItem="aGg-on-NL1" firstAttribute="top" secondItem="Llm-lL-Icb" secondAttribute="bottom" constant="8" id="MIO-40-x2r"/>
-                            <constraint firstItem="xb3-aO-Qok" firstAttribute="top" secondItem="kMb-LB-PRT" secondAttribute="bottom" constant="20" id="N1B-VW-IjI"/>
-                            <constraint firstItem="kMb-LB-PRT" firstAttribute="top" secondItem="aGg-on-NL1" secondAttribute="bottom" constant="8" id="RAz-Kk-agi"/>
-                            <constraint firstItem="aGg-on-NL1" firstAttribute="trailing" secondItem="Ze5-6b-2t3" secondAttribute="trailingMargin" id="ZhN-bY-wzY"/>
-                            <constraint firstItem="kMb-LB-PRT" firstAttribute="top" secondItem="aGg-on-NL1" secondAttribute="bottom" constant="8" id="f7J-Lc-IIy"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="b5f-f1-G7n" secondAttribute="trailing" constant="34" id="9Lq-i2-Xy4"/>
+                            <constraint firstItem="b5f-f1-G7n" firstAttribute="top" secondItem="Llm-lL-Icb" secondAttribute="bottom" constant="8" id="CWM-9S-3Fi"/>
+                            <constraint firstItem="b5f-f1-G7n" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leadingMargin" constant="34" id="QDs-ZP-Aek"/>
+                            <constraint firstItem="xb3-aO-Qok" firstAttribute="top" secondItem="b5f-f1-G7n" secondAttribute="bottom" constant="8" id="uYw-SB-KzO"/>
                         </constraints>
-                        <variation key="default">
-                            <mask key="constraints">
-                                <exclude reference="8Qk-Z5-rDb"/>
-                                <exclude reference="f7J-Lc-IIy"/>
-                            </mask>
-                        </variation>
-                        <variation key="heightClass=regular">
-                            <mask key="constraints">
-                                <include reference="8Qk-Z5-rDb"/>
-                                <include reference="f7J-Lc-IIy"/>
-                            </mask>
-                        </variation>
                     </view>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="iYj-Kq-Ea1" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="50.399999999999999" y="373.76311844077964"/>
+            <point key="canvasLocation" x="48.6328125" y="373.35285505124449"/>
         </scene>
     </scenes>
     <resources>
-        <image name="amber" width="180" height="100"/>
+        <image name="Splash" width="200" height="400"/>
     </resources>
 </document>

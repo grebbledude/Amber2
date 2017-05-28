@@ -5,11 +5,17 @@
 //  Created by Pete Bennett on 10/11/2016.
 //  Copyright © 2016 Pete Bennett. All rights reserved.
 //
-
+/*
+ This is the main controller around the questions. It has an embedded page view controller
+ 
+ There is a problem withe the back button.  It comes from a navigation controller for checkin and registration, but needs a different view for display.
+ On registration it needs to be hidden.
+ //TODO: This would be better if we did it all modally and set it to appear or not that programmatically
+ */
 import UIKit
 import SQLite
 
-class QuestionListController: UIViewController, UIPageViewControllerDelegate, UIPageViewControllerDataSource {
+class QuestionListController: UIViewController, UIPageViewControllerDelegate, UIPageViewControllerDataSource, Lockable, Themed {
 
     
     private var mDBT = DBTables()
@@ -18,16 +24,19 @@ class QuestionListController: UIViewController, UIPageViewControllerDelegate, UI
     private var mAnswers: [[String]] = []
     private var mAnswerTable: [[AnswerTable]] = []
     private var mValid: [Bool] = []
-    private var mDisplayMode = false
+    public var mDisplayMode = false
     private var mCreateMode = false
     private var mDisplayDate = 0
     private var mDayNo = 0
     private var mCurrentPage = 0
     private var mPersonid=""
+    public var mPageNumDisplay: PageNumIndicator!
 //    private var mRegCode = ""
     private var mStatus = ""
     private var mPageCount: Int?
     @IBOutlet weak var containerView: UIView!
+    @IBOutlet weak var pageNumView: UIStackView!
+    
     private var mPages: [QuestionPageController] = []
     private var mTarget = ""
     private var returnDelegate: UIViewController?
@@ -40,13 +49,14 @@ class QuestionListController: UIViewController, UIPageViewControllerDelegate, UI
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        if mQuestions.count == 0 {
+        if mQuestions.count == 0 {  //Sometimes set before we get here?
             var prevResponses: [ResponseTable]?
-            if mDisplayMode  {
+            if mDisplayMode  {  // There must already be some answers to get
                 prevResponses = ResponseTable.get(db: mDBT,filter: ResponseTable.PERSONID == mPersonid && ResponseTable.DAYNO == mDayNo)
                 mQuestions = QuestionTable.getWithResponseDate(db: mDBT, personid: mPersonid, dayNo: mDayNo)
+                mValid = [Bool](repeating: true, count: mQuestions.count)
             }
-            else {
+            else { // check if there are previous answers - don't think there can be in this setup
                 prevResponses = ResponseTable.get(db: mDBT, filter: ResponseTable.PERSONID == mPersonid && ResponseTable.DAYNO == mDayNo)
                 if prevResponses!.count == 0 {
                     mQuestions = QuestionTable.get(db: mDBT,filter: getQuestionType(), orderby: [QuestionTable.ID])
@@ -54,8 +64,9 @@ class QuestionListController: UIViewController, UIPageViewControllerDelegate, UI
                 else {
                     mQuestions = QuestionTable.getWithResponseDate(db: mDBT, personid: mPersonid, dayNo: mDayNo)
                 }
+                mValid = [Bool](repeating: false, count: mQuestions.count)
             }
-            mValid = [Bool](repeating: false, count: mQuestions.count)
+            mPageNumDisplay = PageNumIndicator(stackView: pageNumView!, initStatus: mValid)
         
             var index = 0
             for question in mQuestions {
@@ -63,6 +74,7 @@ class QuestionListController: UIViewController, UIPageViewControllerDelegate, UI
                 index += 1
             }
             mAnswers = [[String]](repeating: [], count: mQuestions.count)
+            // If we have previous responses, split them between the answers
             if prevResponses!.count != 0 {
                 for i in 0...(mQuestions.count - 1) {
                     for response in prevResponses! {
@@ -87,7 +99,9 @@ class QuestionListController: UIViewController, UIPageViewControllerDelegate, UI
         mPersonid = personId
         mStatus = status
         returnDelegate = delegate
-        print ("passData")
+        if mDayNo == 0 {  // If this is registration, then you cannot uses the back button
+            self.navigationItem.setHidesBackButton(true, animated:true);
+        }
     }
     
     override func didReceiveMemoryWarning() {
@@ -95,46 +109,32 @@ class QuestionListController: UIViewController, UIPageViewControllerDelegate, UI
         // Dispose of any resources that can be recreated.
     }
     override func viewWillAppear(_ animated: Bool) {
-        containerView.alpha = 0
+ //       containerView.alpha = 0
+        pageNumView.backgroundColor = .black
         
     }
     
     // MARK: outlets
     @IBOutlet weak var trailConstraint: NSLayoutConstraint!
+
     @IBOutlet weak var submitButton: UIBarButtonItem!
     @IBOutlet weak var leadingConstraint: NSLayoutConstraint!
 
 
     // MARK: actions
     @IBAction func pressSubmit(_ sender: UIBarButtonItem) {
-        if mCreateMode {
-            answersDone()
-            let _ = navigationController?.popViewController(animated: true)
-            // performSegue(withIdentifier: QuestionListController.LOCK_SEGUE, sender: self)
-        }
-        else {
-            answersDone()
-            if let vc_ci = returnDelegate as? CheckInController {
+        answersDone()
+        if !mCreateMode {
+            if let vc_ci = returnDelegate as? CheckInController {  // if we  are checking in, then tell the checkin controller we have saved
                 vc_ci.returnResult(save: true)
-                print ("got a return value")
             }
-            let _ = self.navigationController?.popViewController(animated: true)
-            
-            print ("can continue")
-            //performSegue(withIdentifier: CheckInController.QUESTION_CHECKIN, sender: self)
         }
+        let _ = self.navigationController?.popViewController(animated: true)
     }
-    @IBAction func pressCancel(_ sender: UIBarButtonItem) {
-    }
-    @IBAction func unwindToQuestionSegue (sender: UIStoryboardSegue) {
-        print (sender.identifier ?? "no identifier")
-        switch sender.identifier! {
-        case LockController.LOCKQUESTION:
-            updateResponses()
-            mTarget = QuestionListController.UNWIND_SEGUE
-        default: mTarget = ""
-        }
-    }
+
+ 
+
+
     
     // MARK: get Functions
     private func getQuestionType() -> Expression<Bool> {
@@ -219,8 +219,9 @@ class QuestionListController: UIViewController, UIPageViewControllerDelegate, UI
         }
         return getControllerAt(pagingView.pageNum! + 1)
     }
+
     private func setControllerAt(_ index: Int) -> QuestionPageController{
-        print(index)
+ 
         let page = (self.storyboard?.instantiateViewController(withIdentifier: mQuestions[index].multi! ? "questionmulti" : "questionsingle"))! as! QuestionPageController
         page.pageNum = index
         page.mParent = self
@@ -238,27 +239,23 @@ class QuestionListController: UIViewController, UIPageViewControllerDelegate, UI
         if index >= mPages.count {
             mPages.append(setControllerAt(index))
         }
-        print ("requested page \(index)")
         return mPages[index]
     }
+    // This is called from the question controller to set answers
     public func setAnswer(questionNum: Int, answer: String){
-        print ("single " + answer)
+
         mAnswers[questionNum] = [answer]
         mValid[questionNum] = true
+        mPageNumDisplay.setStatus(number: questionNum, status: true)
         navigationItem.leftBarButtonItems?.first?.isEnabled = canSubmit()        
         submitButton.isEnabled = canSubmit()
-//        submitButton.isUserInteractionEnabled = canSubmit()
     }
     
     public func setAnswer(questionNum: Int, answerSet: [String]){
-        for an in answerSet {
-         print ("set " + an)
-        }
-        print("done")
         mAnswers[questionNum] = answerSet
         mValid[questionNum] = (answerSet.count != 0)
+        mPageNumDisplay.setStatus(number: questionNum, status: mValid[questionNum])
         submitButton.isEnabled = canSubmit()
-  //      navigationItem.leftBarButtonItems?.first?.isEnabled = canSubmit()
 
     }
     public func canSubmit() -> Bool {
@@ -275,7 +272,6 @@ class QuestionListController: UIViewController, UIPageViewControllerDelegate, UI
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         switch segue.identifier! {
         case QuestionListController.PAGE_CONTAINER:
-            print("setting the pager")
             mPageViewController = segue.destination as? UIPageViewController
             mTarget = QuestionListController.PAGE_CONTAINER
         case QuestionListController.LOCK_SEGUE:
@@ -287,7 +283,7 @@ class QuestionListController: UIViewController, UIPageViewControllerDelegate, UI
     }
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        animateSwipe(direction: .left)
+        //animateSwipe(direction: .left)
 
         switch mTarget {
         case QuestionListController.PAGE_CONTAINER:
@@ -302,28 +298,10 @@ class QuestionListController: UIViewController, UIPageViewControllerDelegate, UI
         default: break
 
         }
-            
-
+    
         
     }
-    private func animateSwipe(direction: AnimDirection) {
-        let dir = CGFloat(direction.rawValue)
-        UIView.animate(withDuration: 0.5, delay: 0.0, options: .curveEaseOut, animations: {
-            self.leadingConstraint.constant += self.view.bounds.width * dir
-            self.trailConstraint.constant += self.view.bounds.width * dir
-            self.view.layoutIfNeeded()
-        }, completion: {(_ value: Bool) in
-            self.leadingConstraint!.constant += 2 * self.view.bounds.width * dir * (-1)
-            self.trailConstraint!.constant += 2 * self.view.bounds.width * dir * (-1)
-            self.view.layoutIfNeeded()
-            UIView.animate(withDuration: 0.5, delay: 0.0, options: .curveEaseOut, animations: {
-                self.leadingConstraint.constant += self.view.bounds.width * dir
-                self.trailConstraint.constant += self.view.bounds.width * dir
-                self.containerView.alpha = 1
-                self.view.layoutIfNeeded()
-            }, completion: nil)
-        })
-    }
+
   // MARK: Static
     public static func sendResponse(dayno: Int, dbt: DBTables) {
         let responses = ResponseTable.get(db: dbt, filter: ResponseTable.DAYNO == dayno)
@@ -349,6 +327,10 @@ class QuestionListController: UIViewController, UIPageViewControllerDelegate, UI
 class QuestionPageController: PagingViewController {
     public weak var mParent: QuestionListController?
     public var mSelect: [Bool]?
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        mParent?.mPageNumDisplay.setSelected(number: pageNum!)
+    }
     
 }
 class AnswerCell: UITableViewCell {

@@ -5,7 +5,12 @@
 //  Created by Pete Bennett on 28/11/2016.
 //  Copyright © 2016 Pete Bennett. All rights reserved.
 //
-
+/*
+ This is for both the checkins by group, checkins by person and checkins for the whole church as team leader
+ Probably be a better option to split this, but somehing for the future.
+ Also the current idea of swiping in from the side is not good.
+ 
+ */
 import UIKit
 import SQLite
 
@@ -13,9 +18,7 @@ class ListCheckinController: UIViewController, UITableViewDelegate, UITableViewD
     Lockable, // Shouldshow lock screen
     Refreshable  // Should refresh data when returning
     {
-    
-//    private let tableDate = [["1a", "1b"],["2a","2b","2c"]]
-//    private let rowsHeaders = ["head 1","head 2"]
+
     private var mCheckinGroups: [CheckInController.CheckinGroup]?
     private var mExpanded: [Bool] = []
     private var mDisplayDate: Date?
@@ -38,6 +41,7 @@ class ListCheckinController: UIViewController, UITableViewDelegate, UITableViewD
 
 
 
+    @IBOutlet weak var notificationButton: UIBarButtonItem!
     @IBOutlet weak var leadingConstraint: NSLayoutConstraint!
     @IBOutlet weak var trailConstraint: NSLayoutConstraint!
     @IBOutlet weak var titleItem: UINavigationItem!
@@ -60,33 +64,28 @@ class ListCheckinController: UIViewController, UITableViewDelegate, UITableViewD
     }
     
     @IBAction func pressPanic(_ sender: UIBarButtonItem) {
-
-        
+/*
+ * The panic button is used for both panic as a client and also to display questions as a team
+ * leader.  Questions only exist for red or amber checkin though
+ *
+ */
         if mIsTl {
             if let path = tableView!.indexPathForSelectedRow {
- /*               let x = mCheckinGroups![path.section]
-                let row = path.row - 1
-                let y = x.children![row] */
                 mCurrentGroup = mCheckinGroups![path.section].children![path.row - 1]
                 if mCurrentGroup?.status! == CheckInController.CHECKIN_RED || mCurrentGroup?.status! == CheckInController.CHECKIN_AMBER {
                     performSegue(withIdentifier: ListCheckinController.QuestionSeque, sender: self)
                     // do question stuff.
                 }
-
-                
             }
-            
         }
         else {
             performSegue(withIdentifier: ListCheckinController.PanicSeque, sender: self)
-            
         }
     }
     override func viewDidLoad() {
         super.viewDidLoad()
         
         mIsTl = MyPrefs.getPrefBool(preference: MyPrefs.I_AM_TEAMLEAD)
-
 
         let date: Date = Date()
         let cal: Calendar = Calendar(identifier: .gregorian)
@@ -95,26 +94,34 @@ class ListCheckinController: UIViewController, UITableViewDelegate, UITableViewD
 
         mPersonID = MyPrefs.getPrefString(preference: MyPrefs.PERSON_ID);
 
-        display_group()
+        display_group()  // Always start off by displaying by group
 
         tableView.delegate = self
         tableView.dataSource = self
-        self.tableView.rowHeight = UITableViewAutomaticDimension;
+        self.tableView.rowHeight = UITableViewAutomaticDimension;  // required in order for cell to auto resize
         self.tableView.estimatedRowHeight = 44.0;
+        // This next bit is to allow swipe left and right to page
         let swipeRight = UISwipeGestureRecognizer(target: self, action: #selector(self.respondToSwipeGesture))
         swipeRight.direction = UISwipeGestureRecognizerDirection.right
         self.view.addGestureRecognizer(swipeRight)
         let swipeLeft = UISwipeGestureRecognizer(target: self, action: #selector(self.respondToSwipeGesture))
         swipeLeft.direction = UISwipeGestureRecognizerDirection.left
         self.view.addGestureRecognizer(swipeLeft)
+        checkinButton.setTitleTextAttributes([NSForegroundColorAttributeName:UIColor.init(white: 0.8, alpha: 1.0)], for: .disabled)
     }
     
     override func viewWillAppear(_ animated: Bool) {
+/*
+ * Basically just set up the labels on the buttons, and which buttons are active.
+ *
+ */
+ 
         super.viewWillAppear(animated)
         self.tableView.alpha = 0
         if (mIsTl) {
             panicButton!.title = "Q's"
             checkinButton!.title = "Hist"
+            notificationButton.isEnabled = false
         }
         else {
             let startTime = CheckInController.getCalDate(date: MyPrefs.getPrefInt(preference: MyPrefs.STARTDATE))
@@ -125,7 +132,6 @@ class ListCheckinController: UIViewController, UITableViewDelegate, UITableViewD
             else {
                 let daysDiff = Int(Date().timeIntervalSince(startTime) / (24*3600))
                 if daysDiff > 40 {
-                    print ("number of days difference + \(daysDiff)")
                     panicButton.isEnabled = false
                     checkinButton.isEnabled = false
                 }
@@ -155,7 +161,7 @@ class ListCheckinController: UIViewController, UITableViewDelegate, UITableViewD
         if diff > 3600 {
             checkRequests()
         }
-        animateSwipe(direction: .left)
+//        animateSwipe(direction: .left)
 
     }
     override func didReceiveMemoryWarning() {
@@ -254,6 +260,7 @@ class ListCheckinController: UIViewController, UITableViewDelegate, UITableViewD
                 let cell = tableView.dequeueReusableCell(withIdentifier: "CheckinHeader", for: indexPath) as! CheckInHeaderCell
                 cell.headerNameLabel.text = mCheckinGroups![indexPath.section].name
                 cell.headerStatusLabel.text = mCheckinGroups![indexPath.section].status
+                cell.headerStatusLabel.backgroundColor = getColour(status: cell.headerStatusLabel.text!)
                 cell.delegate = self
                 cell.expanded = mExpanded[indexPath.section]
                 cell.section = indexPath.section
@@ -265,32 +272,44 @@ class ListCheckinController: UIViewController, UITableViewDelegate, UITableViewD
             let data = mCheckinGroups![indexPath.section].children![rowNum]
             cell.detailNameLabel.text = data.name
             cell.detailStatusLabel.text = data.status
+            cell.detailStatusLabel.backgroundColor = getColour(status: cell.detailStatusLabel.text!)
             returnCell = cell
         }
         return returnCell!
         
     }
+    func getColour(status: String) -> UIColor {
+        switch status {
+        case CheckInController.CHECKIN_RED: return .red
+        case CheckInController.CHECKIN_AMBER: return .yellow
+        case CheckInController.CHECKIN_GREEN: return .green
+        default: return .lightGray
+        }
+    }
     
     func tableView(_ tableView: UITableView, didSelectRowAt: IndexPath) {
-        //let cell = tableView.cellForRow(at: didSelectRowAt)
-        //cell?.accessoryType = .checkmark
+
         if didSelectRowAt.row == 0 {
             let expanded = !mExpanded[didSelectRowAt.section]
             mExpanded[didSelectRowAt.section] = expanded
             tableView.reloadSections([didSelectRowAt.section], with: .automatic)
-            
+        } else {
+            let cell = tableView.cellForRow(at: didSelectRowAt)
+            cell?.accessoryType = .checkmark
+            Theme.setCellLayer(view: cell!, selected: true)
         }
         
     }
     func tableView(_ tableView: UITableView, didDeselectRowAt: IndexPath) {
-        //let cell = tableView.cellForRow(at: didDeselectRowAt)
-        //cell?.accessoryType = .none
+        let cell = tableView.cellForRow(at: didDeselectRowAt)
+        cell?.accessoryType = .none
+        
+        Theme.setCellLayer(view: cell!, selected: true)
         
     }
     
     func sectionHeaderView(expanded: Bool, section: Int) {
         mExpanded [section] = expanded
-        print (String(expanded) + "expanded for \(section)")
         tableView.reloadSections([section], with: .automatic)
     }
     private func animateSwipe(direction: AnimDirection) {
@@ -376,11 +395,7 @@ class ListCheckinController: UIViewController, UITableViewDelegate, UITableViewD
             currentItem += 1;
         }
         mExpanded = Array(repeating: false, count: (mCheckinGroups!.count))
-    //Log.e("CheckInListActivity","person done "+mCheckinGroups.size());
-  /*      FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.hide(getSupportFragmentManager().findFragmentById(R.id.liststatusbuttonfrag));
-        ft.commit();
-        setTitle (groupName); */
+
     }
     private func display_group() {
         mCheckinGroups = []
@@ -483,7 +498,10 @@ class ListCheckinController: UIViewController, UITableViewDelegate, UITableViewD
         tableView!.reloadData()
         checkRequests()
     }
-
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        cell.backgroundColor = .clear
+        
+    }
     /*
      // MARK: - Navigation
      
@@ -491,12 +509,13 @@ class ListCheckinController: UIViewController, UITableViewDelegate, UITableViewD
      */
      override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier! == ListCheckinController.QuestionSeque {
-            let target = segue.destination as! QuestionListController
+            let target = segue.destination as! EmbededQuestionController
             let checkin = CheckInTable.getKey(db: mDBT, id: mCurrentGroup!.id!)
             let group = GroupTable.getKey(db: mDBT, id: checkin!.group)
             let date = CheckInController.getCalDate(date: mCurrentGroup!.statusDate!)
             let dayno = CheckInController.getDayNo(date: date, startDay: (group?.startdate!)!)
-            target.passData(status: "", dayNo: dayno, createMode: false, displayMode: true, displayDate: checkin!.date, personId: checkin!.personId!, delegate: self)
+//            target.passData(status: "", dayNo: dayno, createMode: false, displayMode: true, displayDate: checkin!.date, personId: checkin!.personId!, delegate: self)
+            target.passData(dayNo: dayno, displayDate: checkin!.date, personId: checkin!.personId!)
         }
         else {
             if segue.identifier! == ListCheckinController.SettingsSegue {
@@ -515,7 +534,7 @@ class ProfileCell: UITableViewCell {
     @IBOutlet weak var profileIInfo: UILabel!
     public var expanded = false
     public var delegate: ExpandableHeaderDelegate?
-    private var first = true
+ //   private var first = true
 
 
     override func awakeFromNib() {
@@ -531,4 +550,47 @@ class ProfileCell: UITableViewCell {
         self.delegate?.sectionHeaderView(expanded: expanded, section: 0)
         
     }
+}
+class CheckinDetailCell: UITableViewCell {
+    
+    @IBOutlet weak var detailNameLabel: UILabel!
+    @IBOutlet weak var detailStatusLabel: UILabel!
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        // Initialization code
+    }
+    
+    override func setSelected(_ selected: Bool, animated: Bool) {
+        super.setSelected(selected, animated: animated)
+        
+        // Configure the view for the selected state
+    }
+    
+}
+class CheckInHeaderCell: UITableViewCell {
+    
+    public var section: Int?
+    public var expanded = false
+    public var delegate: ExpandableHeaderDelegate?
+    private var first = true
+    @IBOutlet weak var headerNameLabel: UILabel!
+    @IBOutlet weak var headerStatusLabel: UILabel!
+    
+    
+    
+    
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        // Initialization code
+    }
+    override func setSelected(_ selected: Bool, animated: Bool) {
+        super.setSelected(selected, animated: animated)
+        
+    }
+    func toggleOpen() {
+        expanded = !expanded
+        self.delegate?.sectionHeaderView(expanded: expanded, section: self.section!)
+        
+    }
+    
 }

@@ -7,7 +7,9 @@
 //
 
 import UIKit
-
+/*
+ This isn't used at the moment.  Replaced by anonymous panic
+ */
 class PanicController: UIViewController {
 
     

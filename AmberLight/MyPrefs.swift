@@ -5,6 +5,11 @@
 //  Created by Pete Bennett on 06/11/2016.
 //  Copyright © 2016 Pete Bennett. All rights reserved.
 //
+/*
+ All of this could be done better:
+ 1. There is a user defaults functionality in IOS that could be used instead
+ 2.  WE should be using enums
+ */
 
 import Foundation
 final class MyPrefs {
@@ -45,6 +50,7 @@ final class MyPrefs {
     public static let LAST_UNLOCK = "lasttunlock"
     public static let REG_CODE = "regCode"
     public static let CONG_CODE = "congCode"
+    public static let SHOW_LOG = "showlog"
     
     
     

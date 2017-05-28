@@ -8,6 +8,7 @@
 
 
 import SQLite
+import FirebaseCrash
 
 final class MessageTable: TableHelper {
     public static var TABLE_NAME = "MessageTable"
@@ -116,7 +117,8 @@ final class MessageTable: TableHelper {
             do {
                 return try JSONSerialization.jsonObject(with: codedData, options: []) as? [String: Any] as! [String : String]
             } catch {
-                print(error.localizedDescription)
+                FirebaseCrashMessage("Can't serialise json message \(error.localizedDescription)")
+                fatalError()
             }
         }
         return [:]

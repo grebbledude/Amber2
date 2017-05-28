@@ -17,6 +17,9 @@ class ListEventController: UIViewController, UITableViewDelegate, UITableViewDat
     public static let FILTER_MAINTENANCES_SEGUE = "filterMaintenanceSegue"
 //    private var mNeedsUnlock = true
 
+    @IBAction func pressBack(_ sender: Any) {
+        self.navigationController?.popViewController(animated: true)
+    }
     @IBOutlet weak var tableView: UITableView!
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -24,7 +27,8 @@ class ListEventController: UIViewController, UITableViewDelegate, UITableViewDat
         mEvents =  EventTable.get(db: mDBT, filter: EventTable.TIMESTAMP > eventFilter, orderby: [EventTable.TIMESTAMP.desc]  )
         tableView!.delegate = self
         tableView!.dataSource = self
-        // Do any additional setup after loading the view.
+        
+        tableView.tableFooterView = UIView(frame: CGRect.zero)
     }
 
     override func didReceiveMemoryWarning() {
@@ -76,7 +80,10 @@ class ListEventController: UIViewController, UITableViewDelegate, UITableViewDat
         //cell?.accessoryType = .none
         
     }
-    
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        cell.backgroundColor = .clear
+        
+    }
 
     /*
     // MARK: - Navigation

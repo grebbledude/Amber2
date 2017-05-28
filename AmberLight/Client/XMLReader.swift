@@ -106,17 +106,6 @@ class XMLReader: NSObject, XMLParserDelegate {
     }
 
     func parserDidEndDocument(_ parser: XMLParser) {
-        print ("finished")
- /*       for item in self.items {
-            print("\(item.author)\n\(item.desc)");
-            for tags in item.tag {
-                if let count = tags.count {
-                    print("\(tags.name), \(count)")
-                } else {
-                    print("\(tags.name)")
-                }
-            }
-            print("\n")
-        } */
+
     }
 }

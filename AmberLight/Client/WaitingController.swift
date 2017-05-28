@@ -25,6 +25,9 @@ class WaitingController: UIViewController, Refreshable {
             performSegue(withIdentifier: mSegue, sender: self)
         }
     }
+    override func viewWillAppear(_ animated: Bool) {
+        Theme.clearNavBar(viewController: self)
+    }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -40,7 +43,6 @@ class WaitingController: UIViewController, Refreshable {
     }
     private func checkStatusSwitch() -> Bool {
         let status = MyPrefs.getPrefString(preference: MyPrefs.CURRENT_STATUS)
-        print ("status is \(status)")
         switch status {
         case MyPrefs.STATUS_REG_ERROR:
             statusLbl.text = "We are really sorry about this, but something has gone wrong with your registration.  Please re-install the app and try again."

@@ -7,8 +7,11 @@
 //
 
 import UIKit
+/*
+ This is where we set the options for when to do notifications, and whether to include sound or not.
+ */
 
-class NotificagtionSettingsController: UIViewController, Dismissable {
+class NotificagtionSettingsController: UIViewController, Dismissable, Themed {
     
     @IBAction func pressDone(_ sender: Any) {
         var valid = false

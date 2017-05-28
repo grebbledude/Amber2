@@ -31,6 +31,23 @@ final class PersonTable: TableHelper {
     public static let LAST_STATUS = Expression<String>(C_LAST_STATUS)
     public var id, status, pseudonym, name, regCode, group, lastStatus: String!
 
+    public var formatStatus: String {
+        get  {
+            if let stat = status {
+                switch stat {
+                case PersonTable.STATUS_WAIT_REGCODE: return "waiting"
+                case PersonTable.STATUS_WAIT_GROUP: return "unassigned"
+                case PersonTable.STATUS_GROUP_NOT_CONFIRMED: return "unconfirmed"
+                case PersonTable.STATUS_WAIT_CONTACT: return "registered"
+                case PersonTable.STATUS_ACTIVE: return "active"
+                default: return "new"
+                }
+            } else {
+                return "new"
+            }
+        }
+    }
+    
     public static let STATUS_WAIT_REGCODE = "R"
     public static let STATUS_WAIT_GROUP = "G"
     public static let STATUS_GROUP_NOT_CONFIRMED = "W"

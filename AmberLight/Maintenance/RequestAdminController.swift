@@ -8,7 +8,7 @@
 
 import UIKit
 
-class RequestAdminController: UIViewController, UITextFieldDelegate {
+class RequestAdminController: UIViewController, UITextFieldDelegate, Themed {
     @IBOutlet weak var congLbl: UITextField!
     @IBOutlet weak var webLbl: UITextField!
     @IBOutlet weak var phoneLbl: UITextField!

@@ -17,6 +17,9 @@ class CheckInController: UIViewController {
     public static let CHECKIN_MISSED = "Z"
     public static let QUESTION_CHECKIN = "questionCheckin"
     
+    @IBOutlet weak var greenButton: UIButton!
+    @IBOutlet weak var amberButton: UIButton!
+    @IBOutlet weak var redButton: UIButton!
     private var mStatus: String?
     private let mDBT = DBTables()
     private var mTarget: String = ""
@@ -34,26 +37,19 @@ class CheckInController: UIViewController {
     @IBAction func pressRed(_ sender: UIButton) {
         startQuestions(status: CheckInController.CHECKIN_RED)
     }
-    @IBAction func unwindToCheckInSegue (sender: UIStoryboardSegue) {
-        if sender.identifier == CheckInController.QUESTION_CHECKIN {
-//            mTarget = RegistrationController.QUESTION_SEGUE
-            print ("got returning for question")
-            
-        }
-        print("returning segue "+sender.identifier!)
-    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
+        [greenButton, redButton, amberButton].forEach{ button in Theme.checkinButton(button: button)}
+
     }
     override func viewDidAppear(_ animated: Bool) {
 
         switch mTarget {
         case CheckInController.TARGET_DONE:
             checkinComplete()
-/*            mTarget = CheckInController.FINISH
-        case CheckInController.FINISH:
-            let _ = self.navigationController?.popViewController(animated: true) */
+
         default: break
         }
     }
@@ -64,6 +60,10 @@ class CheckInController: UIViewController {
     }
     
     private func checkinComplete() {
+/*
+         * For anonymous checkin (while it is just the client ith no group) we are saving the checkin history directly.
+         * when it is part of a group, this is collated and sent back from the server with the group.
+ */
         let dayno = CheckInController.getDayNo(date: Date())
         if dayno < 0 {
             let checkin = CheckInTable()
@@ -84,19 +84,23 @@ class CheckInController: UIViewController {
             }))
             present(alertController, animated: true, completion: nil)
         } else {
-            let storyboard = UIStoryboard(name: "Checkin", bundle: nil)
-            let vc = storyboard.instantiateViewController(withIdentifier: "red1")
-            self.navigationController!.pushViewController(vc, animated: true)
+            let alertController = UIAlertController(title: "Checkin Complete", message: "Remember - there is now no condemnation for those who are in Christ Jesus!",    preferredStyle: .alert)
+            alertController.addAction(UIAlertAction(title: "OK", style: .default, handler: { (alertController: UIAlertAction!) in
+                let _ = self.navigationController?.popViewController(animated: true)
+            }))
+            present(alertController, animated: true, completion: nil)
+
         }
     }
     private func startQuestions(status: String) {
         mStatus = status
-        mTarget = CheckInController.TARGET_DONE
+        mTarget = ""
         performSegue(withIdentifier: CheckInController.QUESTION, sender: self)
     }
     // MARK: static functions
 
     public static func getDayNo(date: Date) -> Int{
+        // translates date to an integer that can be saved in the database
         if MyPrefs.getPrefInt(preference: MyPrefs.ANON_START) > 0 {
             let startDate = MyPrefs.getPrefInt(preference: MyPrefs.ANON_START)
             return -getDayNo(date: date, startDay: startDate) // until we start for real, anon_start is set and we record -ve dayno
@@ -106,6 +110,7 @@ class CheckInController: UIViewController {
         }
     }
     public static func getDayNo (date: Date, startDay startDateInt: Int ) ->Int{
+        // translates date into a day number
         if startDateInt == 0 {
             return 0
         }
@@ -170,7 +175,6 @@ class CheckInController: UIViewController {
         return dateFormatter.date(from: String(dateInt)+"180000")!
     }
     public static func sendCheckinMessage(status: String, dbt: DBTables) {
-        //TODO - something seriously missing here!!!
         let personid = MyPrefs.getPrefString(preference: MyPrefs.PERSON_ID)
         let groupid = MyPrefs.getPrefString(preference: MyPrefs.GROUP)
         let teamLead = MyPrefs.getPrefString(preference: MyPrefs.TL)
@@ -207,16 +211,15 @@ class CheckInController: UIViewController {
             case CheckInController.QUESTION:
                 let dest = segue.destination as! QuestionListController
                 let dayno = CheckInController.getDayNo(date: Date())
-                print (" Found dayno of \(dayno)")
-                dest.passData( status: mStatus!, dayNo: dayno, createMode: true, displayMode: false, displayDate: 0, personId: "", delegate: self)
+                dest.passData( status: mStatus!, dayNo: dayno, createMode: false, displayMode: false, displayDate: 0, personId: "", delegate: self)
             default: break
             }
         }
     }
+    // called by the question controller to distinguish between save and cancel.
     public func returnResult(save: Bool) {
         if save {
             mTarget = CheckInController.TARGET_DONE
-            print("am returning")
         }
         else {
             mTarget = ""

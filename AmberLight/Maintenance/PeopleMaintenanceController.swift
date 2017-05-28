@@ -8,7 +8,7 @@
 
 import UIKit
 
-class PeopleMaintenanceController: UIViewController, Dismissable, Lockable {
+class PeopleMaintenanceController: UIViewController, Dismissable, Lockable, Themed {
     static let QUEST_SEGUE = "questSegue"
     weak var dismissalDelegate : DismissalDelegate?
 
@@ -59,7 +59,7 @@ class PeopleMaintenanceController: UIViewController, Dismissable, Lockable {
         super.viewDidLoad()
         idLbl.text = mPerson!.id
         psLBL.text  = mPerson!.pseudonym
-        statusLbl.text = mPerson?.status
+        statusLbl.text = mPerson?.formatStatus
         regLbl.text = mPerson!.regCode
         nameTxt.text = mPerson!.name
         lastStatusLbl.text = mPerson!.lastStatus
@@ -75,8 +75,7 @@ class PeopleMaintenanceController: UIViewController, Dismissable, Lockable {
         else {
             qButton.isEnabled = false
         }
-        
-        
+ //       self.layerGradient()
     }
 
     override func didReceiveMemoryWarning() {
@@ -102,12 +101,10 @@ class PeopleMaintenanceController: UIViewController, Dismissable, Lockable {
     public func gotCode(_ code: String, _ rc: RegCodeType) {
         if mWaiting {
             if rc.rawValue > 0 {
-                print (" Got result \(rc)")
                 mWaiting = false
                 mPerson!.id = "temp\(CACurrentMediaTime())"
                 mPerson!.regCode = code
-                let x = mPerson!.insert(db: mDBT)
-                print ("after insert \(x)")
+                _ = mPerson!.insert(db: mDBT)
                 UIApplication.shared.endIgnoringInteractionEvents()
                 FcmMessage.builder(action: .ACT_NEW_CODE)
                     .addData(key: .REG_CODE, data: code)
@@ -146,9 +143,6 @@ class PeopleMaintenanceController: UIViewController, Dismissable, Lockable {
                 self.present(alertController, animated: true, completion: nil)
             }
         }
-        else {
-            print ("another result \(rc)")
-        }
     }
 
     /*
@@ -158,8 +152,8 @@ class PeopleMaintenanceController: UIViewController, Dismissable, Lockable {
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
         if segue.identifier! == PeopleMaintenanceController.QUEST_SEGUE {
-            let vc = segue.destination as! QuestionListController
-            vc.passData(status: "", dayNo: 0, createMode: false, displayMode: true, displayDate: 0, personId: mPerson!.id!, delegate: self)
+            let vc = segue.destination as! EmbededQuestionController
+            vc.passData(dayNo: 0, displayDate: 0, personId: mPerson!.id!)
         }
     }
  

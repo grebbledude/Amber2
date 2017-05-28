@@ -24,15 +24,16 @@ class AnonPanicController: UIViewController, UITableViewDelegate, UITableViewDat
         if let lastDate = AnonPanicController.mLastPanic {
             let diff = Date().timeIntervalSinceReferenceDate - lastDate.timeIntervalSinceReferenceDate
             if diff < 3600 {
-                UIAlertController(title: "Too Quick", message: "To protect group members you cannot send multiple messages in an hour", preferredStyle: .alert)
-                    .addAction(UIAlertAction(title: "OK", style: .cancel,
-                        handler: {(action : UIAlertAction!) -> Void in
-                            let _ = self.navigationController!.popViewController(animated: true)}))
+                UIAlertController.displayOK(viewController: self, title: "Too Quick", message: "To protect group members you cannot send multiple messages in an hour", preferredStyle: .alert, handler: {(action : UIAlertAction!) -> Void in
+                    let _ = self.navigationController!.popViewController(animated: true)})
+  //              let alert = UIAlertController(title: "Too Quick", message: "To protect group members you cannot send multiple messages in an hour", preferredStyle: .alert)
+ //               alert.addAction(UIAlertAction(title: "OK", style: .cancel,
+  //                      handler: {(action : UIAlertAction!) -> Void in
+  //                          let _ = self.navigationController!.popViewController(animated: true)}))
+  //              self.present(alert, animated: true, completion: nil)
                 return
             }
         }
- 
-
         
         if let indexPath = tableView.indexPathForSelectedRow {
             FcmMessage.builder(action: .ACT_PANIC_ANON)
@@ -40,8 +41,11 @@ class AnonPanicController: UIViewController, UITableViewDelegate, UITableViewDat
                 .addData(key: .PSEUDONYM, data: MyPrefs.getPrefString(preference: MyPrefs.PSEUDONYM))
                 .addData(key: .MSG_NO, data: indexPath.row)
                 .send()
-            let _ = self.navigationController!.popViewController(animated: true)
+            
+//            let _ = self.navigationController!.popViewController(animated: true)
             AnonPanicController.mLastPanic = Date()
+            UIAlertController.displayOK(viewController: self, title: "Panic sent", message: "Your team will receive your message and will be given the opportunity to respond", preferredStyle: .alert, handler: {(action : UIAlertAction!) -> Void in
+                let _ = self.navigationController!.popViewController(animated: true)})
         }
     }
     override func viewDidLoad() {
@@ -51,7 +55,6 @@ class AnonPanicController: UIViewController, UITableViewDelegate, UITableViewDat
         sendButton.isEnabled = false
         tableView.rowHeight = UITableViewAutomaticDimension
         tableView.estimatedRowHeight = 40
-        // Do any additional setup after loading the view.
     }
 
     override func didReceiveMemoryWarning() {
@@ -79,21 +82,22 @@ class AnonPanicController: UIViewController, UITableViewDelegate, UITableViewDat
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt: IndexPath) {
-        //let cell = tableView.cellForRow(at: didSelectRowAt)
-        //cell?.accessoryType = .checkmark
         sendButton.isEnabled = true
+        let cell = tableView.cellForRow(at: didSelectRowAt)
+        Theme.setCellLayer(view: cell!.contentView, selected: true)
+        cell?.accessoryType = .checkmark
+
+    }
+    func tableView(_ tableView: UITableView, didDeselectRowAt: IndexPath) {
+        let cell = tableView.cellForRow(at: didDeselectRowAt)
+        cell?.accessoryType = .none
+        Theme.setCellLayer(view: cell!.contentView, selected: false)
+    }
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        cell.backgroundColor = .clear
         
     }
 
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
 
 }
 class PanicCell: UITableViewCell {

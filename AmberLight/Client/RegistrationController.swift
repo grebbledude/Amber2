@@ -8,17 +8,25 @@
 
 import UIKit
 import FirebaseDatabase
+import FirebaseAuth
 import FirebaseCrash
 
 
-class RegistrationController: UIViewController, DismissalDelegate {
+class RegistrationController: UIViewController, DismissalDelegate, Themed {
     private static let QUESTION_SEGUE = "regToQuestion"
     private static let LOCK_SEGUE = "regToLock"
     private static let HOLDER_SEGUE = "holderSegue"
     private static let ADMIN_SEGUE = "adminSegue"
     private static let WAITING_SEGUE = "waitingSegue"
     private static let ANON_SEGUE = "anonCheck"
-    
+    /*
+     So to explain how this works. There are a number of common actions that might be needed
+     These are listed in RegAction. 
+     For each type or registration there is a list of actions (STATUS_CHANGE)
+     SEGUES show which segue to follow
+     TITLEs and TEXT show the alert dialog title and text
+ 
+    */
 
     private static let SEGUES = [LOCK_SEGUE,LOCK_SEGUE,WAITING_SEGUE,QUESTION_SEGUE,WAITING_SEGUE,ANON_SEGUE,ADMIN_SEGUE,nil]
     private static let TITLES = ["Create lock code",  "Re-enter lock Code", "Registration complete", "Answer questions","Registration complete", "Registration complete", "Admin Mode"]
@@ -33,7 +41,7 @@ class RegistrationController: UIViewController, DismissalDelegate {
     weak var actionToEnable : UIAlertAction?
     weak var nameText : UITextField?
     weak var contactText : UITextField?
-    private var mFIRDBRef: FIRDatabaseReference?
+    private var mFIRDBRef: DatabaseReference?
     private var mWaiting = false
     private var mType = RegCodeType.REG_CODE_NOT_FOUND
     private var mStatus = 0
@@ -65,7 +73,7 @@ class RegistrationController: UIViewController, DismissalDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.definesPresentationContext = true
-        mFIRDBRef = FIRDatabase.database().reference(withPath: FcmMessage.FirebaseDBKey)
+        mFIRDBRef = Database.database().reference(withPath: FcmMessage.FirebaseDBKey)
 
         // Do any additional setup after loading the view.
     }
@@ -77,9 +85,17 @@ class RegistrationController: UIViewController, DismissalDelegate {
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(RegistrationController.dismissKeyboard))
+        
+        //Uncomment the line below if you want the tap not not interfere and cancel other interactions.
+        //tap.cancelsTouchesInView = false
+        
+        view.addGestureRecognizer(tap)
+
         if mSwitch {
             self.mStatus += 1
             let currAction = RegistrationController.STATUS_CHANGE[mType]![mStatus]
+            // This is where we go through the actions and do whatever is required.
             switch currAction {
             case .anonCheck:
                 MyPrefs.setPref(preference: MyPrefs.ANON_MODE, value: true)
@@ -137,7 +153,12 @@ class RegistrationController: UIViewController, DismissalDelegate {
 
 
     }
+    func dismissKeyboard() {
+        //Causes the view (or one of its embedded text fields) to resign the first responder status.
+        view.endEditing(true)
+    }
     private func displayDialog (currAction: RegAction, handler: @escaping (_: UIAlertAction) -> Void) {
+        // I think we can do this using the helper functions that we extend UIAlertDialog with
         let action = UIAlertAction(title: "OK", style: .default, handler: handler)
         let alert = UIAlertController(title: RegistrationController.TITLES[currAction.rawValue], message: RegistrationController.TEXT[currAction.rawValue], preferredStyle: .alert)
         alert.addAction(action)
@@ -145,6 +166,7 @@ class RegistrationController: UIViewController, DismissalDelegate {
         
     }
     public func gotCode(type: RegCodeType) {
+        // So this gets called when a code is found.  It also gets called if it times out.
         if mWaiting {
             mWaiting = false
             UIApplication.shared.endIgnoringInteractionEvents()
@@ -201,6 +223,7 @@ class RegistrationController: UIViewController, DismissalDelegate {
 
         }
     }
+    // This validates the text in an alert dialog
     func textChanged(_ sender:UITextField) {
         if let name = self.nameText?.text {
             if let contact = self.contactText?.text {
@@ -239,32 +262,15 @@ class RegistrationController: UIViewController, DismissalDelegate {
     }
     @IBAction func pressValidate(_ sender: UIButton) {
         //  This is the scren where you add a code to register.  Validate that code first.
-        print(regCode.text!)
         regCode.text = regCode.text?.uppercased()
-        if String(regCode!.text!)[0] == "8" {
+        if String(regCode!.text!)[0] == "8" {  //8 is the prefix for all administrator codes
             let registerCode = MyPrefs.getPrefString(preference: MyPrefs.REG_CODE)
             if regCode.text == registerCode {
                 self.mType = .REG_CODE_ADMIN
                 MyPrefs.setPref(preference: MyPrefs.LOCKCODE, value: "")
                 mStatus = 0
                 performSegue(withIdentifier: RegistrationController.LOCK_SEGUE, sender: self)
- /*                this was in the wrong place..
-                FcmMessage.builder(action: .ACT_REGISTER)
-                    .addData(key: .REG_CODE, data: regCode.text!)
-                    .send()
-                
-                let churchCode = MyPrefs.getPrefString(preference: MyPrefs.CONG_CODE)
-                RegistrationController.setSpecificCode(code: churchCode)
-                let alertController = UIAlertController(title: "Validating code", message: "The code is being validated.  You should have admin access within minutes", preferredStyle: .alert)
-                
-                let okAction = UIAlertAction(title: "OK", style: .default, handler: {
-                    (action : UIAlertAction!) -> Void in
-                        self.navigationController!.popViewController(animated: true)
-                    })
-                alertController.addAction(okAction)
-                self.present(alertController, animated: true, completion: nil)  */
                 return
-
             }
             let alertController = UIAlertController(title: "Invalid code", message: "That code was incorrect", preferredStyle: .alert)
             
@@ -280,12 +286,14 @@ class RegistrationController: UIViewController, DismissalDelegate {
             present(alertController, animated: true, completion: nil)
         }
         else {
+            // Admin codes are already stored.  Other codes we need to look up
             UIApplication.shared.beginIgnoringInteractionEvents()
             mWaiting = true
             let deadlineTime = DispatchTime.now() + .seconds(6)
             DispatchQueue.main.asyncAfter(deadline: deadlineTime, execute: {
                 self.gotCode(type: .REG_CODE_TIMEOUT)
             })
+            
             self.mFIRDBRef!.child(self.regCode.text!).observeSingleEvent(of: .value, with: { (snapshot) in
                 // Get user value
                 let valueDict = snapshot.value as? NSDictionary
@@ -295,10 +303,10 @@ class RegistrationController: UIViewController, DismissalDelegate {
                 
                 // ...
             }) { (error) in
-                print(error.localizedDescription)
                 self.gotCode(type: .REG_CODE_ERROR)
                 return
             }
+            
         }
     }
 
@@ -326,13 +334,14 @@ class RegistrationController: UIViewController, DismissalDelegate {
     // MARK: Code generation
     static public func generateCode(type: RegCodeType, callback: @escaping (_ code: String, _ rc: RegCodeType) -> Void) {
         generateCode(type: type, iteration: 1, callback: callback)
+        
     }
     /*
-     The first character is numeric - 1-7 for client, 8 for TL and 9 for admin
+     The first character is numeric - 1-7 for client, 9 for TL and 8 for admin
      Then a number and 2 alphanumeric, then either numeric or alphabetic (for a client)
     */
     static public func generateCode(type: RegCodeType, iteration: Int, callback: @escaping (_ code: String, _ rc: RegCodeType) -> Void) {
-        let FIRDBRef = FIRDatabase.database().reference(withPath: FcmMessage.FirebaseDBKey)
+        let FIRDBRef = Database.database().reference(withPath: FcmMessage.FirebaseDBKey)
 
         let random = Int(arc4random_uniform(9*31*31))
         var typeChars = ""
@@ -344,13 +353,12 @@ class RegistrationController: UIViewController, DismissalDelegate {
         case .REG_CODE_TL:
             let typeSeed = Int(arc4random_uniform(80)+100)
             typeChars = getChar(typeSeed / 9) + getChar(typeSeed % 9)
-            firstchar = 8
-        case .REG_CODE_ADMIN:
+            firstchar = 9
+        case .REG_CODE_ADMIN:  // This is never used.
             let typeSeed = Int(arc4random_uniform(89)+100)
             typeChars = getChar(typeSeed / 9) + getChar(typeSeed % 9)
-            firstchar = 9
+            firstchar = 8
         default:
-            print("something gone wrong in generating code")
             return
         }
         var regcode: [String] = []
@@ -364,13 +372,11 @@ class RegistrationController: UIViewController, DismissalDelegate {
             // Get user value
             if let _ = snapshot.value as? NSDictionary? {
                 if iteration < 5 {
-                    print ("Got duplicate code")
                     generateCode(type: type, iteration: iteration + 1, callback: callback)
                 }
                 else {
                     callback("", .REG_CODE_ERROR) // Code already exists and tried 5 times
                 }
-                
             }
             else {
                 FIRDBRef.child(newCode).setValue([RegistrationController.FIRType: type.rawValue])
@@ -379,15 +385,14 @@ class RegistrationController: UIViewController, DismissalDelegate {
             // let type = valueDict?[RegistrationController.FIRType] as? String ?? ""
                 // ..
         }) { (error) in
-            print(error.localizedDescription)
             callback("",.REG_CODE_ERROR)
         }
     }
-    public static func checkSpecificCode(code: String, callback: @escaping (_ code: String, _ rc: RegCodeType) -> Void) {
+    //public static func checkSpecificCode(code: String, callback: @escaping (_ code: String, _ rc: RegCodeType) -> Void) {
         //
         // This is now dead code.  We can delete after we delete admincodecontroller
         //
-        let FIRDBRef = FIRDatabase.database().reference(withPath: FcmMessage.FirebaseDBKey)
+/*        let FIRDBRef = Database.database().reference(withPath: FcmMessage.FirebaseDBKey)
         FIRDBRef.child(code).observeSingleEvent(of: .value, with: { (snapshot) in
             // Get user value
             if let _ = snapshot.value as? NSDictionary? {
@@ -399,15 +404,15 @@ class RegistrationController: UIViewController, DismissalDelegate {
             }
             // ..
         }) { (error) in
-            print(error.localizedDescription)
             callback("",.REG_CODE_ERROR)
-        }
-    }
+        } */
+    //}
     public static func setSpecificCode(code: String) {
+
         //
         // Set a specific code and overwrite
         //
-        let FIRDBRef = FIRDatabase.database().reference(withPath: FcmMessage.FirebaseDBKey)
+        let FIRDBRef = Database.database().reference(withPath: FcmMessage.FirebaseDBKey)
         FIRDBRef.child(code).setValue([RegistrationController.FIRType: RegCodeType.REG_CODE_CHURCH.rawValue])
     }
 

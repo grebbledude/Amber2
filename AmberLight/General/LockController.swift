@@ -8,7 +8,7 @@
 
 import UIKit
 
-class LockController: UIViewController, Dismissable {
+class LockController: UIViewController, Dismissable, Themed {
     
     public static let REG_RETURN = "unwindToRegistration"
     weak var dismissalDelegate: DismissalDelegate?
@@ -35,6 +35,7 @@ class LockController: UIViewController, Dismissable {
         }
         lockOK.isEnabled = false
         debugButton.isHidden = true
+        //layerGradient()
     }
     
     override func didReceiveMemoryWarning() {
@@ -97,11 +98,9 @@ class LockController: UIViewController, Dismissable {
     @IBAction func lockPressOK(_ sender: UIButton) {
         let lock = mLockCode[0] + mLockCode[1] + mLockCode[2] + mLockCode[3] + mLockCode[4]
 
-        print ("Is being presented \(self.isBeingPresented)")
         if mLockStored == "" {
             mLockStored = lock
             MyPrefs.setPref(preference: MyPrefs.LOCKCODE, value: lock)
-            print ("lock code set")
             dismissalDelegate?.finishedShowing(viewController: self)
             //performSegue(withIdentifier: getRewindSegueName(), sender: self)
         }
@@ -115,14 +114,7 @@ class LockController: UIViewController, Dismissable {
                 else {
                     self.dismiss(animated: true, completion: nil)
                 }
-                //performSegue(withIdentifier: getRewindSegueName(), sender: self)
-                print ("valid")
             }
-            else
-            {
-                print ("invalid")
-            }
-            
         }
         
     }
@@ -136,6 +128,7 @@ class LockController: UIViewController, Dismissable {
         return "*"
     }
     private func lockPressed(_ key: String) {
+        // Once the 5 digits are done, you can type the debug code to enable the debug button
         if key == "x" {
             if mLockCount > 0 {
                 mLockCount -= 1

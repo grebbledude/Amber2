@@ -8,6 +8,10 @@
 
 import UIKit
 
+//
+//   This is not currently used
+//
+
 class EncourageController: UIViewController {
 
     override func viewDidLoad() {

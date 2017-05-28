@@ -78,8 +78,7 @@ Lockable, Refreshable {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt: IndexPath) {
-        //let cell = tableView.cellForRow(at: didSelectRowAt)
-        //cell?.accessoryType = .checkmark
+
         mCurrentRequest = mRequests[didSelectRowAt.row]
         performSegue(withIdentifier: ListRequestController.SEND_SEGUE, sender: self)
         

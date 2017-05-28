@@ -13,8 +13,9 @@ class FcmMessage {
     private var mMessage: [String : String]!
     private var mMsgNo: Int?
     private static var mAction: String?
-
+    
     public static let FirebaseDBKey = "AmberLightTest"
+    public static let FirebaseUser = "alauthuser@amberlight.org.uk"
  
     
     init() {
@@ -42,13 +43,13 @@ class FcmMessage {
         return addData(key: key, data: String(data))
     }
     public func send() {
+        LogWriter.write(text: "Outbound \(FcmMessage.mAction!)")
         var msg = MyPrefs.getPrefInt(preference: MyPrefs.MSGNO)
         msg += 1
         MyPrefs.setPref(preference: MyPrefs.MSGNO, value: msg)
         let msgNo = String(msg)
-        print ("sending message " + msgNo )
-        FIRMessaging.messaging().sendMessage(mMessage!,
-                                             to: "528137606903@gcm.googleapis.com",
+        Messaging.messaging().sendMessage(mMessage!,
+                                             to: FirebaseSignon.fcmId,
                                              withMessageID: msgNo,
                                              timeToLive: 24*60*60*3)
     }
@@ -88,6 +89,7 @@ enum FcmMessageAction: String {
     case ACT_PANIC_ANON = "panicanon" // Anonymous panic message
     case ACT_RESPOND_REQUEST = "respreq" // Respond to a prayer request
     case ACT_SETUP_TL = "setuptl" // As an administrator set myself up as a team leader
+    case ACT_SHOW_LOG = "showlog" // show the logs
 }
 enum FcmMessageKey: String {
     case ACTION = "act"

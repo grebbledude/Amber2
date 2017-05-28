@@ -9,7 +9,7 @@
 import UIKit
 import SQLite
 
-class GroupMaintenanceController: UIViewController, UITableViewDelegate, UITableViewDataSource, Dismissable, Lockable {
+class GroupMaintenanceController: UIViewController, UITableViewDelegate, UITableViewDataSource, Dismissable, Lockable, Themed {
     
     weak var dismissalDelegate : DismissalDelegate?
     @IBAction func pressCancel(_ sender: Any) {
@@ -87,7 +87,7 @@ class GroupMaintenanceController: UIViewController, UITableViewDelegate, UITable
         //***************
         idLbl.text = mGroup!.id
         nameTxt.text  = mGroup!.desc
-        statusLbl.text = mGroup?.status
+        statusLbl.text = mGroup?.formatStatus
         startDateLbl.text = String(mGroup!.startdate)
         memberLbl.text = String(mGroup!.members)
         // Do any additional setup after
@@ -114,7 +114,13 @@ class GroupMaintenanceController: UIViewController, UITableViewDelegate, UITable
         else {
             saveButton.isEnabled = false
             activateButton.isEnabled = false
+            saveButton.tintColor = .gray
+            activateButton.tintColor = .gray
+            nameTxt.isUserInteractionEnabled = false
+            nameTxt.background = UIImage()
         }
+        
+        tableView.tableFooterView = UIView(frame: CGRect.zero)
     }
     override func viewDidAppear(_ animated: Bool) {
         let id = mGroup!.id!
@@ -123,7 +129,9 @@ class GroupMaintenanceController: UIViewController, UITableViewDelegate, UITable
             for i in 0...(mPeople!.count - 1 ) {
                 if person.id == mPeople![i].id {
                     tableView.selectRow(at: IndexPath(row: i, section: 0), animated: false, scrollPosition: .none)
-                    tableView.cellForRow(at: IndexPath(row: i, section: 0))?.accessoryType = .checkmark
+                    let cell = tableView.cellForRow(at: IndexPath(row: i, section: 0))!
+                    cell.accessoryType = .checkmark
+                    Theme.setCellLayer(view: cell, selected: true)
                 }
             }
         }
@@ -159,12 +167,11 @@ class GroupMaintenanceController: UIViewController, UITableViewDelegate, UITable
         return 1
     }
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int{
-        print (" Got num rows \(mPeople!.count)")
         
         return mPeople!.count
     }
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell{
-        print ("getting cell")
+
         // Table view cells are reused and should be dequeued using a cell identifier.
         let cell = tableView.dequeueReusableCell(withIdentifier: "PersonCell", for: indexPath) as! SimplePersonCell
         let person = mPeople![indexPath.row]
@@ -180,18 +187,24 @@ class GroupMaintenanceController: UIViewController, UITableViewDelegate, UITable
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt: IndexPath) {
-        //let cell = tableView.cellForRow(at: didSelectRowAt)
-        //cell?.accessoryType = .checkmark
+        let cell = tableView.cellForRow(at: didSelectRowAt)
+        cell?.accessoryType = .checkmark
+        Theme.setCellLayer(view: cell!, selected: true)
         activateButton.isEnabled = false
         mPeople?[didSelectRowAt.row].group = mGroup!.id
     }
     func tableView(_ tableView: UITableView, didDeselectRowAt: IndexPath) {
-        //let cell = tableView.cellForRow(at: didDeselectRowAt)
-        //cell?.accessoryType = .none
+        let cell = tableView.cellForRow(at: didDeselectRowAt)
+        cell?.accessoryType = .none
+        Theme.setCellLayer(view: cell!, selected: false)
         activateButton.isEnabled = false
         mPeople?[didDeselectRowAt.row].group = ""
     }
-
+    
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        cell.backgroundColor = .clear
+        
+    }
 
     /*
     // MARK: - Navigation

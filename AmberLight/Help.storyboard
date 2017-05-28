@@ -1,0 +1,567 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12118" systemVersion="16E195" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="wJh-e4-MQW">
+    <device id="retina5_5" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12086"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <capability name="Navigation items with more than one left or right bar item" minToolsVersion="7.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Help View Controller-->
+        <scene sceneID="bLl-da-O3S">
+            <objects>
+                <viewController storyboardIdentifier="help" id="wJh-e4-MQW" customClass="HelpViewController" customModule="AmberLight" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="TcQ-XC-Iqa"/>
+                        <viewControllerLayoutGuide type="bottom" id="jSw-rM-wMj"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="ms1-aL-OlZ">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dj4-E3-D2y">
+                                <rect key="frame" x="0.0" y="20" width="414" height="44"/>
+                                <items>
+                                    <navigationItem title="Help" id="fG0-af-irT">
+                                        <barButtonItem key="leftBarButtonItem" title="&lt;Return" id="anP-2L-PMZ">
+                                            <connections>
+                                                <action selector="pressReturn:" destination="wJh-e4-MQW" id="dq3-J8-yha"/>
+                                            </connections>
+                                        </barButtonItem>
+                                        <rightBarButtonItems>
+                                            <barButtonItem title="&gt;" id="qcs-33-aPN">
+                                                <connections>
+                                                    <action selector="pressRight:" destination="wJh-e4-MQW" id="AJm-vo-Mbv"/>
+                                                </connections>
+                                            </barButtonItem>
+                                            <barButtonItem title="&lt;" id="hQJ-Lc-hvp">
+                                                <connections>
+                                                    <action selector="pressLeft:" destination="wJh-e4-MQW" id="wRV-hx-Hlb"/>
+                                                </connections>
+                                            </barButtonItem>
+                                        </rightBarButtonItems>
+                                    </navigationItem>
+                                </items>
+                            </navigationBar>
+                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3N1-7l-OWA">
+                                <rect key="frame" x="0.0" y="213" width="414" height="523"/>
+                                <connections>
+                                    <segue destination="VwF-BN-LnQ" kind="embed" identifier="embed" id="aaO-0F-XIQ"/>
+                                </connections>
+                            </containerView>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="nua-RY-Pl8">
+                                <rect key="frame" x="0.0" y="64" width="414" height="128"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="128" id="C7L-He-ixr"/>
+                                </constraints>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="help" id="86h-nR-6Ae" customClass="HelpCell" customModule="AmberLight" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="28" width="414" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="86h-nR-6Ae" id="OOw-3p-J14">
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="44"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QPL-97-uap">
+                                                    <rect key="frame" x="8" y="10" width="398" height="23"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <color key="textColor" red="0.72228342862792105" green="0.072779319616527255" blue="0.76987216164012851" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="QPL-97-uap" firstAttribute="trailing" secondItem="OOw-3p-J14" secondAttribute="trailingMargin" id="Bkd-ko-KZ5"/>
+                                                <constraint firstItem="QPL-97-uap" firstAttribute="top" secondItem="OOw-3p-J14" secondAttribute="topMargin" constant="2" id="Zn8-Xg-Bjq"/>
+                                                <constraint firstAttribute="bottomMargin" secondItem="QPL-97-uap" secondAttribute="bottom" constant="2" id="aOO-4a-ymV"/>
+                                                <constraint firstItem="QPL-97-uap" firstAttribute="leading" secondItem="OOw-3p-J14" secondAttribute="leadingMargin" id="nrW-qO-mjz"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="helpLabel" destination="QPL-97-uap" id="kFf-8N-zQK"/>
+                                        </connections>
+                                    </tableViewCell>
+                                </prototypes>
+                            </tableView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fdb-6g-weV">
+                                <rect key="frame" x="0.0" y="200" width="414" height="5"/>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="5" id="WbS-2X-Y3g"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <constraints>
+                            <constraint firstItem="3N1-7l-OWA" firstAttribute="top" secondItem="fdb-6g-weV" secondAttribute="bottom" constant="8" id="5Ss-ZS-hVc"/>
+                            <constraint firstItem="nua-RY-Pl8" firstAttribute="top" secondItem="dj4-E3-D2y" secondAttribute="bottom" id="67O-p5-7yt"/>
+                            <constraint firstAttribute="trailing" secondItem="3N1-7l-OWA" secondAttribute="trailing" id="97Y-f9-his"/>
+                            <constraint firstAttribute="trailing" secondItem="nua-RY-Pl8" secondAttribute="trailing" id="RWd-Jo-lrW"/>
+                            <constraint firstItem="nua-RY-Pl8" firstAttribute="leading" secondItem="ms1-aL-OlZ" secondAttribute="leading" id="Sdo-Wh-KOb"/>
+                            <constraint firstItem="fdb-6g-weV" firstAttribute="leading" secondItem="ms1-aL-OlZ" secondAttribute="leading" id="Zl5-HG-iV3"/>
+                            <constraint firstItem="dj4-E3-D2y" firstAttribute="leading" secondItem="ms1-aL-OlZ" secondAttribute="leading" id="aYJ-AP-dSL"/>
+                            <constraint firstAttribute="trailing" secondItem="fdb-6g-weV" secondAttribute="trailing" id="hOE-O9-SiK"/>
+                            <constraint firstAttribute="trailing" secondItem="dj4-E3-D2y" secondAttribute="trailing" id="mx8-tF-44L"/>
+                            <constraint firstItem="fdb-6g-weV" firstAttribute="top" secondItem="nua-RY-Pl8" secondAttribute="bottom" constant="8" id="mxR-lN-yvC"/>
+                            <constraint firstItem="3N1-7l-OWA" firstAttribute="leading" secondItem="ms1-aL-OlZ" secondAttribute="leading" id="oQW-dm-aPd"/>
+                            <constraint firstItem="dj4-E3-D2y" firstAttribute="top" secondItem="TcQ-XC-Iqa" secondAttribute="bottom" id="qdG-Qx-bVe"/>
+                            <constraint firstItem="jSw-rM-wMj" firstAttribute="top" secondItem="3N1-7l-OWA" secondAttribute="bottom" id="uX8-nb-QPu"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="tabView" destination="nua-RY-Pl8" id="owV-Ht-YJd"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="v5h-gg-6ZN" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1461" y="237"/>
+        </scene>
+        <!--Page View Controller-->
+        <scene sceneID="QSb-md-jMG">
+            <objects>
+                <pageViewController autoresizesArchivedViewToFullSize="NO" transitionStyle="scroll" navigationOrientation="horizontal" spineLocation="none" id="VwF-BN-LnQ" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="2fY-Fc-tOZ" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2328" y="238"/>
+        </scene>
+        <!--Paging View Controller-->
+        <scene sceneID="xru-oy-eXO">
+            <objects>
+                <viewController storyboardIdentifier="helpIntro" id="8da-DU-IJ8" customClass="PagingViewController" customModule="AmberLight" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="eYe-Hk-jJs"/>
+                        <viewControllerLayoutGuide type="bottom" id="6K5-vE-wVL"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="saN-pS-ALf">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="What is Amber Light?" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5LH-il-R3s">
+                                <rect key="frame" x="20" y="28" width="374" height="24"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8VJ-x5-IYz">
+                                <rect key="frame" x="20" y="60" width="374" height="656"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ooJ-NJ-51I">
+                                        <rect key="frame" x="8" y="8" width="358" height="81.333333333333343"/>
+                                        <string key="text">Pornography is a disease that is destroying the lives of too many men today.  Too many of us are too ashamed to admit it to others, and continue to fail and feeel condemned.</string>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DRg-NG-Ozg">
+                                        <rect key="frame" x="8" y="96.666666666666671" width="358" height="101.66666666666664"/>
+                                        <string key="text">The truth is that there is no condemnation in Christ Jesus.  God has given us the power to  be set free, and given us a family of brothers to support us and pray for us until we see that freedom!</string>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Amber Light enables you to track your progress, support and be supported by others and yet retain anonimity." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SRz-fB-INK">
+                                        <rect key="frame" x="8" y="205.66666666666669" width="358" height="61"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstItem="DRg-NG-Ozg" firstAttribute="leading" secondItem="8VJ-x5-IYz" secondAttribute="leading" constant="8" id="1xH-lH-Aso"/>
+                                    <constraint firstItem="SRz-fB-INK" firstAttribute="leading" secondItem="8VJ-x5-IYz" secondAttribute="leading" constant="8" id="1zZ-qE-Q9G"/>
+                                    <constraint firstAttribute="trailing" secondItem="ooJ-NJ-51I" secondAttribute="trailing" constant="8" id="75B-2S-YT3"/>
+                                    <constraint firstAttribute="trailing" secondItem="SRz-fB-INK" secondAttribute="trailing" constant="8" id="Aeg-Wg-Rot"/>
+                                    <constraint firstAttribute="trailing" secondItem="DRg-NG-Ozg" secondAttribute="trailing" constant="8" id="B3z-ec-P1D"/>
+                                    <constraint firstItem="DRg-NG-Ozg" firstAttribute="top" secondItem="ooJ-NJ-51I" secondAttribute="bottom" constant="8" id="EMI-wz-ihc"/>
+                                    <constraint firstItem="ooJ-NJ-51I" firstAttribute="centerX" secondItem="8VJ-x5-IYz" secondAttribute="centerX" id="HHL-eZ-6p6"/>
+                                    <constraint firstAttribute="bottom" secondItem="SRz-fB-INK" secondAttribute="bottom" constant="50" id="Ih7-VF-dUP"/>
+                                    <constraint firstItem="ooJ-NJ-51I" firstAttribute="leading" secondItem="8VJ-x5-IYz" secondAttribute="leading" constant="8" id="Jwg-JI-tCU"/>
+                                    <constraint firstItem="SRz-fB-INK" firstAttribute="top" secondItem="DRg-NG-Ozg" secondAttribute="bottom" constant="8" id="WdX-p0-6C0"/>
+                                    <constraint firstItem="ooJ-NJ-51I" firstAttribute="top" secondItem="8VJ-x5-IYz" secondAttribute="top" constant="8" id="gZG-nB-oHB"/>
+                                </constraints>
+                            </scrollView>
+                        </subviews>
+                        <constraints>
+                            <constraint firstItem="8VJ-x5-IYz" firstAttribute="leading" secondItem="saN-pS-ALf" secondAttribute="leadingMargin" id="3IF-XB-TPo"/>
+                            <constraint firstItem="5LH-il-R3s" firstAttribute="leading" secondItem="saN-pS-ALf" secondAttribute="leadingMargin" id="G8k-NC-Ltn"/>
+                            <constraint firstItem="5LH-il-R3s" firstAttribute="top" secondItem="eYe-Hk-jJs" secondAttribute="bottom" constant="8" id="IeY-Pm-cUO"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="5LH-il-R3s" secondAttribute="trailing" id="OfL-at-BrU"/>
+                            <constraint firstItem="8VJ-x5-IYz" firstAttribute="top" secondItem="5LH-il-R3s" secondAttribute="bottom" constant="8" id="Uye-hy-7rn"/>
+                            <constraint firstItem="6K5-vE-wVL" firstAttribute="top" secondItem="8VJ-x5-IYz" secondAttribute="bottom" constant="20" id="VM7-42-kO3"/>
+                            <constraint firstItem="8VJ-x5-IYz" firstAttribute="trailing" secondItem="saN-pS-ALf" secondAttribute="trailingMargin" id="eZT-xj-528"/>
+                        </constraints>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="ZFD-6T-vSX" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2983" y="282"/>
+        </scene>
+        <!--Paging View Controller-->
+        <scene sceneID="2IT-Gt-iY4">
+            <objects>
+                <viewController storyboardIdentifier="helpIntro1" id="BUt-xe-uc1" customClass="PagingViewController" customModule="AmberLight" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="VVx-ka-XMZ"/>
+                        <viewControllerLayoutGuide type="bottom" id="qAA-dG-tOH"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="5Rz-WI-MVU">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="How does it work?" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zXQ-Fj-bi0">
+                                <rect key="frame" x="20" y="28" width="374" height="24"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="GYh-hu-W1B">
+                                <rect key="frame" x="20" y="60" width="374" height="656"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OlA-XS-7oN">
+                                        <rect key="frame" x="8" y="8" width="358" height="81.333333333333343"/>
+                                        <string key="text">If your church registers then you will be given a code to enter to attach yourself to that church.  See the next page if your church isn't registered.</string>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dDG-ga-Pgp">
+                                        <rect key="frame" x="8" y="96.666666666666671" width="358" height="122.00000000000001"/>
+                                        <string key="text">Once you have entered the code, you will be assigned a "pseudonym" (such as "Captain Scarlet")  and a team leader.  You must contact the team leader to complete the registration, but he is the only person who will ever know who you really are.  </string>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aQH-aX-5A8">
+                                        <rect key="frame" x="8" y="226.00000000000003" width="358" height="101.66666666666671"/>
+                                        <string key="text">The team leader will assign you to a group, and then the checkin period of 40 days will start.  Why 40 days? Because as well as being biblical, scientists have proven that it takes 40 days to make or break a haibit!</string>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstItem="OlA-XS-7oN" firstAttribute="centerX" secondItem="GYh-hu-W1B" secondAttribute="centerX" id="LWS-3l-td0"/>
+                                    <constraint firstItem="OlA-XS-7oN" firstAttribute="top" secondItem="GYh-hu-W1B" secondAttribute="top" constant="8" id="TJT-D6-vuQ"/>
+                                    <constraint firstAttribute="bottom" secondItem="aQH-aX-5A8" secondAttribute="bottom" constant="50" id="V9U-mV-0KN"/>
+                                    <constraint firstItem="dDG-ga-Pgp" firstAttribute="leading" secondItem="GYh-hu-W1B" secondAttribute="leading" constant="8" id="WgH-Gh-Lq1"/>
+                                    <constraint firstItem="OlA-XS-7oN" firstAttribute="leading" secondItem="GYh-hu-W1B" secondAttribute="leading" constant="8" id="ahQ-j2-FGU"/>
+                                    <constraint firstItem="aQH-aX-5A8" firstAttribute="leading" secondItem="GYh-hu-W1B" secondAttribute="leading" constant="8" id="b8J-ld-Hkv"/>
+                                    <constraint firstAttribute="trailing" secondItem="aQH-aX-5A8" secondAttribute="trailing" constant="8" id="gJJ-tV-fsc"/>
+                                    <constraint firstAttribute="trailing" secondItem="OlA-XS-7oN" secondAttribute="trailing" constant="8" id="hI0-l9-Xok"/>
+                                    <constraint firstAttribute="trailing" secondItem="dDG-ga-Pgp" secondAttribute="trailing" constant="8" id="q1l-nr-3Km"/>
+                                    <constraint firstItem="aQH-aX-5A8" firstAttribute="top" secondItem="dDG-ga-Pgp" secondAttribute="bottom" constant="8" id="sju-n8-iF4"/>
+                                    <constraint firstItem="dDG-ga-Pgp" firstAttribute="top" secondItem="OlA-XS-7oN" secondAttribute="bottom" constant="8" id="uKp-GT-DWy"/>
+                                </constraints>
+                            </scrollView>
+                        </subviews>
+                        <constraints>
+                            <constraint firstItem="zXQ-Fj-bi0" firstAttribute="leading" secondItem="5Rz-WI-MVU" secondAttribute="leadingMargin" id="1Dv-fw-djd"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="zXQ-Fj-bi0" secondAttribute="trailing" id="ZND-Jo-VbC"/>
+                            <constraint firstItem="GYh-hu-W1B" firstAttribute="leading" secondItem="5Rz-WI-MVU" secondAttribute="leadingMargin" id="bof-NW-OV1"/>
+                            <constraint firstItem="GYh-hu-W1B" firstAttribute="trailing" secondItem="5Rz-WI-MVU" secondAttribute="trailingMargin" id="c15-Eo-vb3"/>
+                            <constraint firstItem="GYh-hu-W1B" firstAttribute="top" secondItem="zXQ-Fj-bi0" secondAttribute="bottom" constant="8" id="hst-Zl-bwE"/>
+                            <constraint firstItem="qAA-dG-tOH" firstAttribute="top" secondItem="GYh-hu-W1B" secondAttribute="bottom" constant="20" id="k8v-d6-rMf"/>
+                            <constraint firstItem="zXQ-Fj-bi0" firstAttribute="top" secondItem="VVx-ka-XMZ" secondAttribute="bottom" constant="8" id="n8r-PH-j0a"/>
+                        </constraints>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="AFM-7i-ZS6" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3610" y="281"/>
+        </scene>
+        <!--Paging View Controller-->
+        <scene sceneID="JVk-67-t4Y">
+            <objects>
+                <viewController storyboardIdentifier="helpanon" id="Xs9-RZ-NXz" customClass="PagingViewController" customModule="AmberLight" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="COx-Dt-dV2"/>
+                        <viewControllerLayoutGuide type="bottom" id="fmJ-Su-D0b"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="v2B-YG-Q6o">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="What if my church isn't registered?" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="e7l-28-Aj4">
+                                <rect key="frame" x="20" y="28" width="374" height="24"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bs3-9t-yz2">
+                                <rect key="frame" x="20" y="60" width="374" height="656"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Q54-gH-4v0">
+                                        <rect key="frame" x="8" y="8" width="358" height="122"/>
+                                        <string key="text">If your church isn't registered then encourage your pastor to do so :-).  If that still doesn't work, you can still benefit from the application in "anonymous mode".  Simply select the registration option for "my church is not registered".</string>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7G9-tB-6hT">
+                                        <rect key="frame" x="8" y="137.33333333333331" width="358" height="81.333333333333343"/>
+                                        <string key="text">Initially you will just check in each evening without a supporting group. Once you have checked in for a number of consecutive evenings you will be assigned a group.  </string>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9Ya-V6-637">
+                                        <rect key="frame" x="8" y="226" width="358" height="122"/>
+                                        <string key="text">You will then receive status updates for your group and a few other groups.  You can send prayer requests and pray just the same as in registered church.  The only difference is that you do not have a team leader for individual support.</string>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstItem="7G9-tB-6hT" firstAttribute="leading" secondItem="bs3-9t-yz2" secondAttribute="leading" constant="8" id="3jc-LB-8fp"/>
+                                    <constraint firstItem="9Ya-V6-637" firstAttribute="top" secondItem="7G9-tB-6hT" secondAttribute="bottom" constant="8" id="Lad-QJ-rnR"/>
+                                    <constraint firstAttribute="trailing" secondItem="Q54-gH-4v0" secondAttribute="trailing" constant="8" id="MXz-gP-R82"/>
+                                    <constraint firstItem="Q54-gH-4v0" firstAttribute="centerX" secondItem="bs3-9t-yz2" secondAttribute="centerX" id="QQO-Kf-GmC"/>
+                                    <constraint firstItem="Q54-gH-4v0" firstAttribute="top" secondItem="bs3-9t-yz2" secondAttribute="top" constant="8" id="RWB-bT-Gv3"/>
+                                    <constraint firstItem="9Ya-V6-637" firstAttribute="leading" secondItem="bs3-9t-yz2" secondAttribute="leading" constant="8" id="UPS-ut-SAH"/>
+                                    <constraint firstItem="7G9-tB-6hT" firstAttribute="top" secondItem="Q54-gH-4v0" secondAttribute="bottom" constant="8" id="WCF-cL-3Fd"/>
+                                    <constraint firstAttribute="trailing" secondItem="9Ya-V6-637" secondAttribute="trailing" constant="8" id="eCi-o5-RaO"/>
+                                    <constraint firstAttribute="trailing" secondItem="7G9-tB-6hT" secondAttribute="trailing" constant="8" id="eL4-Dt-kom"/>
+                                    <constraint firstAttribute="bottom" secondItem="9Ya-V6-637" secondAttribute="bottom" constant="50" id="trH-lP-I8K"/>
+                                    <constraint firstItem="Q54-gH-4v0" firstAttribute="leading" secondItem="bs3-9t-yz2" secondAttribute="leading" constant="8" id="yPX-GR-EC1"/>
+                                </constraints>
+                            </scrollView>
+                        </subviews>
+                        <constraints>
+                            <constraint firstItem="fmJ-Su-D0b" firstAttribute="top" secondItem="bs3-9t-yz2" secondAttribute="bottom" constant="20" id="1IJ-Er-LRQ"/>
+                            <constraint firstItem="e7l-28-Aj4" firstAttribute="leading" secondItem="v2B-YG-Q6o" secondAttribute="leadingMargin" id="EPz-lB-XeF"/>
+                            <constraint firstItem="bs3-9t-yz2" firstAttribute="top" secondItem="e7l-28-Aj4" secondAttribute="bottom" constant="8" id="HdI-1s-Y37"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="e7l-28-Aj4" secondAttribute="trailing" id="OHB-wN-bs3"/>
+                            <constraint firstItem="bs3-9t-yz2" firstAttribute="leading" secondItem="v2B-YG-Q6o" secondAttribute="leadingMargin" id="Y1m-mP-sD1"/>
+                            <constraint firstItem="bs3-9t-yz2" firstAttribute="trailing" secondItem="v2B-YG-Q6o" secondAttribute="trailingMargin" id="YEq-p9-ffg"/>
+                            <constraint firstItem="e7l-28-Aj4" firstAttribute="top" secondItem="COx-Dt-dV2" secondAttribute="bottom" constant="8" id="naH-01-56L"/>
+                        </constraints>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Kiw-S5-ea5" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="4259" y="280"/>
+        </scene>
+        <!--Paging View Controller-->
+        <scene sceneID="2GT-DO-0VS">
+            <objects>
+                <viewController storyboardIdentifier="helpCheckin" id="vsE-tT-r1I" customClass="PagingViewController" customModule="AmberLight" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="Hvc-pZ-e58"/>
+                        <viewControllerLayoutGuide type="bottom" id="cdg-8K-MQR"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="da6-Oa-Gvp">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="How to check in?" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DOy-2O-aGw">
+                                <rect key="frame" x="20" y="28" width="374" height="24"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6Ao-ia-Meg">
+                                <rect key="frame" x="20" y="60" width="374" height="656"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xNL-sj-2uo">
+                                        <rect key="frame" x="8" y="8" width="358" height="122"/>
+                                        <string key="text">Every night between 6 and 1 you will be asked to check in.  This is a simple matter of selecting one of 3 status.  Red, Amber or green.  Green and Red are obvious, but Amber imeans that you are struggling with temptation.</string>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RoW-3Z-m6O">
+                                        <rect key="frame" x="8" y="137.33333333333337" width="358" height="101.66666666666666"/>
+                                        <string key="text">If you check in with amber, or if you send a panic message, all your group members will be notified (identified only by your pseudonym).  They can respond to let you know that they are praying for you. </string>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6mo-oU-JoG">
+                                        <rect key="frame" x="8" y="246.33333333333331" width="358" height="61"/>
+                                        <string key="text">If you check in with either red or amber, you will be asked to complete a few questions.  Only the team leader will see the answers.</string>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstItem="6mo-oU-JoG" firstAttribute="top" secondItem="RoW-3Z-m6O" secondAttribute="bottom" constant="8" id="4k0-56-o8a"/>
+                                    <constraint firstItem="xNL-sj-2uo" firstAttribute="leading" secondItem="6Ao-ia-Meg" secondAttribute="leading" constant="8" id="5TZ-dA-Jz3"/>
+                                    <constraint firstItem="xNL-sj-2uo" firstAttribute="top" secondItem="6Ao-ia-Meg" secondAttribute="top" constant="8" id="Gdj-hV-1Mz"/>
+                                    <constraint firstItem="xNL-sj-2uo" firstAttribute="centerX" secondItem="6Ao-ia-Meg" secondAttribute="centerX" id="LVV-Ez-qPb"/>
+                                    <constraint firstAttribute="bottom" secondItem="6mo-oU-JoG" secondAttribute="bottom" constant="50" id="Pgf-FL-CbO"/>
+                                    <constraint firstItem="RoW-3Z-m6O" firstAttribute="top" secondItem="xNL-sj-2uo" secondAttribute="bottom" constant="8" id="QgY-5j-tjk"/>
+                                    <constraint firstAttribute="trailing" secondItem="RoW-3Z-m6O" secondAttribute="trailing" constant="8" id="bNm-tj-rpD"/>
+                                    <constraint firstAttribute="trailing" secondItem="xNL-sj-2uo" secondAttribute="trailing" constant="8" id="grv-3Y-mHM"/>
+                                    <constraint firstAttribute="trailing" secondItem="6mo-oU-JoG" secondAttribute="trailing" constant="8" id="jk0-YT-EWj"/>
+                                    <constraint firstItem="6mo-oU-JoG" firstAttribute="leading" secondItem="6Ao-ia-Meg" secondAttribute="leading" constant="8" id="s7D-jm-ARy"/>
+                                    <constraint firstItem="RoW-3Z-m6O" firstAttribute="leading" secondItem="6Ao-ia-Meg" secondAttribute="leading" constant="8" id="z7q-cL-wPx"/>
+                                </constraints>
+                            </scrollView>
+                        </subviews>
+                        <constraints>
+                            <constraint firstAttribute="trailingMargin" secondItem="DOy-2O-aGw" secondAttribute="trailing" id="0gT-pZ-jYr"/>
+                            <constraint firstItem="DOy-2O-aGw" firstAttribute="leading" secondItem="da6-Oa-Gvp" secondAttribute="leadingMargin" id="5Yg-Nb-AV1"/>
+                            <constraint firstItem="cdg-8K-MQR" firstAttribute="top" secondItem="6Ao-ia-Meg" secondAttribute="bottom" constant="20" id="EbL-e6-a1l"/>
+                            <constraint firstItem="6Ao-ia-Meg" firstAttribute="trailing" secondItem="da6-Oa-Gvp" secondAttribute="trailingMargin" id="Gx4-IA-ae9"/>
+                            <constraint firstItem="DOy-2O-aGw" firstAttribute="top" secondItem="Hvc-pZ-e58" secondAttribute="bottom" constant="8" id="S9u-Zu-wOz"/>
+                            <constraint firstItem="6Ao-ia-Meg" firstAttribute="top" secondItem="DOy-2O-aGw" secondAttribute="bottom" constant="8" id="jar-dl-YxD"/>
+                            <constraint firstItem="6Ao-ia-Meg" firstAttribute="leading" secondItem="da6-Oa-Gvp" secondAttribute="leadingMargin" id="vfv-VG-Xa6"/>
+                        </constraints>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="DhA-ab-TNH" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="4875" y="280"/>
+        </scene>
+        <!--Paging View Controller-->
+        <scene sceneID="iNi-lC-bVt">
+            <objects>
+                <viewController storyboardIdentifier="helpRegChurch" id="oNC-oZ-qxe" customClass="PagingViewController" customModule="AmberLight" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="Srv-8E-Hu1"/>
+                        <viewControllerLayoutGuide type="bottom" id="fVV-5K-QXh"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="ZvX-da-zBB">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="How do I register my church?" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XaB-5L-BbY">
+                                <rect key="frame" x="20" y="28" width="374" height="24"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="YAm-Mp-jR6">
+                                <rect key="frame" x="20" y="60" width="374" height="656"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VoL-Up-9JB">
+                                        <rect key="frame" x="8" y="8" width="358" height="101.66666666666666"/>
+                                        <string key="text">If your church isn't registered, then it is a simple to fix!  Given the sensitive nature of this, we ask that only the pastors or those specifically authorised by them for men's ministry register a church.</string>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WNA-Sn-NFM">
+                                        <rect key="frame" x="8" y="117" width="358" height="122"/>
+                                        <string key="text">To register you need to provide details of the church, including a church email address.  After some basic checks, a registration code will be sent to this email address.  Enter this code into the app and you will then be registered.</string>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Pag-8Z-OfW">
+                                        <rect key="frame" x="8" y="246.33333333333331" width="358" height="122"/>
+                                        <string key="text">As the administrator, you will also be a tem leader, and you can create other team leaders (this generates a code that you give to the team leader to enter).  Also you are responsible for distributing people registering amond the team leaders.</string>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstItem="VoL-Up-9JB" firstAttribute="leading" secondItem="YAm-Mp-jR6" secondAttribute="leading" constant="8" id="2TT-aC-Muc"/>
+                                    <constraint firstItem="VoL-Up-9JB" firstAttribute="centerX" secondItem="YAm-Mp-jR6" secondAttribute="centerX" id="Dmd-B9-NlV"/>
+                                    <constraint firstAttribute="trailing" secondItem="WNA-Sn-NFM" secondAttribute="trailing" constant="8" id="Lal-Wq-Rbp"/>
+                                    <constraint firstItem="Pag-8Z-OfW" firstAttribute="leading" secondItem="YAm-Mp-jR6" secondAttribute="leading" constant="8" id="Nje-Fi-cbC"/>
+                                    <constraint firstAttribute="trailing" secondItem="VoL-Up-9JB" secondAttribute="trailing" constant="8" id="O3z-sD-9UP"/>
+                                    <constraint firstAttribute="bottom" secondItem="Pag-8Z-OfW" secondAttribute="bottom" constant="50" id="QQR-Lt-swB"/>
+                                    <constraint firstItem="VoL-Up-9JB" firstAttribute="top" secondItem="YAm-Mp-jR6" secondAttribute="top" constant="8" id="YaA-FW-Lua"/>
+                                    <constraint firstItem="Pag-8Z-OfW" firstAttribute="top" secondItem="WNA-Sn-NFM" secondAttribute="bottom" constant="8" id="aen-X1-BaK"/>
+                                    <constraint firstItem="WNA-Sn-NFM" firstAttribute="top" secondItem="VoL-Up-9JB" secondAttribute="bottom" constant="8" id="bpr-95-yoo"/>
+                                    <constraint firstItem="WNA-Sn-NFM" firstAttribute="leading" secondItem="YAm-Mp-jR6" secondAttribute="leading" constant="8" id="d0q-B4-C1Q"/>
+                                    <constraint firstAttribute="trailing" secondItem="Pag-8Z-OfW" secondAttribute="trailing" constant="8" id="hZK-Ws-8Jk"/>
+                                </constraints>
+                            </scrollView>
+                        </subviews>
+                        <constraints>
+                            <constraint firstItem="XaB-5L-BbY" firstAttribute="top" secondItem="Srv-8E-Hu1" secondAttribute="bottom" constant="8" id="7sW-cy-WZl"/>
+                            <constraint firstItem="XaB-5L-BbY" firstAttribute="leading" secondItem="ZvX-da-zBB" secondAttribute="leadingMargin" id="8Bf-EG-JtX"/>
+                            <constraint firstItem="YAm-Mp-jR6" firstAttribute="leading" secondItem="ZvX-da-zBB" secondAttribute="leadingMargin" id="add-tb-gzb"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="XaB-5L-BbY" secondAttribute="trailing" id="fFc-yL-ShP"/>
+                            <constraint firstItem="fVV-5K-QXh" firstAttribute="top" secondItem="YAm-Mp-jR6" secondAttribute="bottom" constant="20" id="pcw-Yo-UHD"/>
+                            <constraint firstItem="YAm-Mp-jR6" firstAttribute="trailing" secondItem="ZvX-da-zBB" secondAttribute="trailingMargin" id="yec-Gd-z2Q"/>
+                            <constraint firstItem="YAm-Mp-jR6" firstAttribute="top" secondItem="XaB-5L-BbY" secondAttribute="bottom" constant="8" id="zzD-MH-DT7"/>
+                        </constraints>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="tGd-dN-ZCJ" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="5533" y="280"/>
+        </scene>
+        <!--Paging View Controller-->
+        <scene sceneID="SE5-Ov-ZEw">
+            <objects>
+                <viewController storyboardIdentifier="helpTeamLead" id="bxR-5i-iL0" customClass="PagingViewController" customModule="AmberLight" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="ppk-CW-gKs"/>
+                        <viewControllerLayoutGuide type="bottom" id="cx9-ab-Qsx"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="7FP-9b-2W8">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="What do I do as a team lead?" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ebC-Sy-ekc">
+                                <rect key="frame" x="20" y="28" width="374" height="24"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="RMB-Ke-Fo8">
+                                <rect key="frame" x="20" y="60" width="374" height="656"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7xc-pu-gCf">
+                                        <rect key="frame" x="8" y="8" width="358" height="101.66666666666666"/>
+                                        <string key="text">Obviously the first responsibility is to support the people assigned to you.  Confidentiality and encouragement are essential to make a difference.  Never be shocked or disappointed. Freedom may come one day at a time.</string>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KbH-6e-V8O">
+                                        <rect key="frame" x="8" y="117" width="358" height="142.33333333333331"/>
+                                        <string key="text">You can create people (if you have someone that you are already on contact with).  This will generate a code to give them when registering.  Or you will be assigned people by the administrator.  You then need to wait for the clients to contact you so that you can link the pseudonym to a real person.</string>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="w8K-ec-lhh">
+                                        <rect key="frame" x="8" y="266.66666666666674" width="358" height="81.333333333333314"/>
+                                        <string key="text">Either way, you then need to create a group and assign people to it.  Once done, activate the group and then 3 days later the checkions will start for that group.</string>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstItem="w8K-ec-lhh" firstAttribute="leading" secondItem="RMB-Ke-Fo8" secondAttribute="leading" constant="8" id="16f-32-swO"/>
+                                    <constraint firstAttribute="trailing" secondItem="7xc-pu-gCf" secondAttribute="trailing" constant="8" id="3qb-B5-BkE"/>
+                                    <constraint firstAttribute="bottom" secondItem="w8K-ec-lhh" secondAttribute="bottom" constant="50" id="HSy-92-qrS"/>
+                                    <constraint firstItem="7xc-pu-gCf" firstAttribute="leading" secondItem="RMB-Ke-Fo8" secondAttribute="leading" constant="8" id="KKy-Ga-OSn"/>
+                                    <constraint firstAttribute="trailing" secondItem="w8K-ec-lhh" secondAttribute="trailing" constant="8" id="cZ4-k8-i94"/>
+                                    <constraint firstItem="7xc-pu-gCf" firstAttribute="top" secondItem="RMB-Ke-Fo8" secondAttribute="top" constant="8" id="dQ5-jm-vvl"/>
+                                    <constraint firstAttribute="trailing" secondItem="KbH-6e-V8O" secondAttribute="trailing" constant="8" id="dzx-Ge-xKD"/>
+                                    <constraint firstItem="w8K-ec-lhh" firstAttribute="top" secondItem="KbH-6e-V8O" secondAttribute="bottom" constant="8" id="f3V-qc-rFf"/>
+                                    <constraint firstItem="KbH-6e-V8O" firstAttribute="leading" secondItem="RMB-Ke-Fo8" secondAttribute="leading" constant="8" id="idX-gQ-L6r"/>
+                                    <constraint firstItem="KbH-6e-V8O" firstAttribute="top" secondItem="7xc-pu-gCf" secondAttribute="bottom" constant="8" id="pp6-Mg-LSE"/>
+                                    <constraint firstItem="7xc-pu-gCf" firstAttribute="centerX" secondItem="RMB-Ke-Fo8" secondAttribute="centerX" id="yaG-iw-XJB"/>
+                                </constraints>
+                            </scrollView>
+                        </subviews>
+                        <constraints>
+                            <constraint firstItem="ebC-Sy-ekc" firstAttribute="leading" secondItem="7FP-9b-2W8" secondAttribute="leadingMargin" id="3rV-0g-AYR"/>
+                            <constraint firstItem="cx9-ab-Qsx" firstAttribute="top" secondItem="RMB-Ke-Fo8" secondAttribute="bottom" constant="20" id="Jfq-a5-a60"/>
+                            <constraint firstItem="RMB-Ke-Fo8" firstAttribute="trailing" secondItem="7FP-9b-2W8" secondAttribute="trailingMargin" id="RbH-js-GSk"/>
+                            <constraint firstItem="RMB-Ke-Fo8" firstAttribute="leading" secondItem="7FP-9b-2W8" secondAttribute="leadingMargin" id="Sfr-KG-wPW"/>
+                            <constraint firstItem="RMB-Ke-Fo8" firstAttribute="top" secondItem="ebC-Sy-ekc" secondAttribute="bottom" constant="8" id="Xec-UM-sGK"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="ebC-Sy-ekc" secondAttribute="trailing" id="hey-Xm-bRF"/>
+                            <constraint firstItem="ebC-Sy-ekc" firstAttribute="top" secondItem="ppk-CW-gKs" secondAttribute="bottom" constant="8" id="rw0-8q-AlB"/>
+                        </constraints>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="bcA-K2-8X9" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="6171" y="280"/>
+        </scene>
+    </scenes>
+</document>

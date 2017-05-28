@@ -41,8 +41,8 @@ class TeamLeadController: UIViewController, UITableViewDelegate, UITableViewData
             }
         }
     }
-    @IBAction func pressTL(_ sender: UIBarButtonItem) {
-    }
+
+    @IBOutlet var mainView: UIView!
     @IBOutlet weak var numEntriesLabel: UILabel!
     @IBOutlet weak var picker: UIPickerView!
     @IBOutlet weak var tableView: UITableView!
@@ -54,8 +54,13 @@ class TeamLeadController: UIViewController, UITableViewDelegate, UITableViewData
         tableView.delegate = self
         tableView.dataSource = self
         getTLs()
+  //      clearNavBar()
+        //Theme.clearNavBar(viewController: self)
         
+        tableView.tableFooterView = UIView(frame: CGRect.zero)
 
+        self.tabBarController?.tabBar.backgroundColor = UIColor.blue
+        self.tabBarController?.tabBar.isTranslucent = false
         // Do any additional setup after loading the view.
     }
     override func didReceiveMemoryWarning() {
@@ -63,7 +68,8 @@ class TeamLeadController: UIViewController, UITableViewDelegate, UITableViewData
         // Dispose of any resources that can be recreated.
     }
     override func viewWillAppear(_ animated: Bool) {
-
+        
+        Theme.clearNavBar(viewController: self)
     }
     override func viewDidAppear(_ animated: Bool) {
                 reloadPicker()
@@ -188,7 +194,6 @@ class TeamLeadController: UIViewController, UITableViewDelegate, UITableViewData
     public func gotCode(_ code: String, _ rc: RegCodeType) {
         if mWaiting {
             if rc.rawValue > 0 {
-                print (" Got result \(rc)")
                 mWaiting = false
                 let tl = TeamLeadTable()
                 tl.name = mName!
@@ -231,9 +236,7 @@ class TeamLeadController: UIViewController, UITableViewDelegate, UITableViewData
                 self.present(alertController, animated: true, completion: nil)
             }
         }
-        else {
-            print ("another result \(rc)")
-        }
+
     }
     
     // MARK: Table stuff
@@ -263,17 +266,25 @@ class TeamLeadController: UIViewController, UITableViewDelegate, UITableViewData
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt: IndexPath) {
-        //let cell = tableView.cellForRow(at: didSelectRowAt)
-        //cell?.accessoryType = .checkmark
+      
         // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
         // need to handle delete
         if mTLs![didSelectRowAt.row].code == "PENDING" {
             activateTL()
+        } else {
+            let cell = tableView.cellForRow(at: didSelectRowAt)
+            cell?.accessoryType = .checkmark
+            Theme.setCellLayer(view: cell!, selected: true)
         }
     }
     func tableView(_ tableView: UITableView, didDeselectRowAt: IndexPath) {
-        //let cell = tableView.cellForRow(at: didDeselectRowAt)
-        //cell?.accessoryType = .none
+        let cell = tableView.cellForRow(at: didDeselectRowAt)
+        cell?.accessoryType = .none
+        Theme.setCellLayer(view: cell!, selected: false)
+        
+    }
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        cell.backgroundColor = .clear
         
     }
 // MARK: Picker stuff

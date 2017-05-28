@@ -12,7 +12,8 @@ import SQLite
 class AnonCheckListController: UIViewController, UITableViewDelegate, UITableViewDataSource,
     CheckList, // Will revert to this screen after checkin
     Refreshable,  // refresh data when enter from baclground
-    Lockable //  Will go to lock screen
+    Lockable, //  Will go to lock screen
+    Themed // apply background theme
 {
 
  
@@ -31,7 +32,7 @@ class AnonCheckListController: UIViewController, UITableViewDelegate, UITableVie
         super.viewDidLoad()
         tableView.delegate = self
         tableView.dataSource = self
-//        getTableData()
+
     }
     override func viewWillAppear(_ animated: Bool) {
 
@@ -45,6 +46,7 @@ class AnonCheckListController: UIViewController, UITableViewDelegate, UITableVie
             mLastCheckDate = lastCheckDt
             tableView.reloadData()
         }
+
     }
 
     override func didReceiveMemoryWarning() {
@@ -56,9 +58,7 @@ class AnonCheckListController: UIViewController, UITableViewDelegate, UITableVie
     }
     func refreshData() {
         if MyPrefs.getPrefString(preference: MyPrefs.CURRENT_STATUS) == MyPrefs.STATUS_ACTIVE {
-            print("got active status")
             AppDelegate.setupNavigation(target: "CheckIn", storyboard: .Checkin)
- //           performSegue(withIdentifier: "nowActive", sender: self)
         } else {
             getTableData()
             tableView.reloadData()
@@ -73,7 +73,7 @@ class AnonCheckListController: UIViewController, UITableViewDelegate, UITableVie
         /*
          First see whether the checkin button should be activated.  This is between 18:00 and 02:00 if we haven't already checked in
          */
-        if lastCheckDt > 0 {
+ //       if lastCheckDt > 0 {
             let currentDate = CheckInController.getDate(date: Date())
             let dateFormatter = DateFormatter()
             dateFormatter.dateFormat = "HH"
@@ -84,20 +84,20 @@ class AnonCheckListController: UIViewController, UITableViewDelegate, UITableVie
             } else {
                 checkinButton.isEnabled = false
             }
-        } else {
-            checkinButton.isEnabled = true
-        }
+ //       } else {
+   //         checkinButton.isEnabled = true
+ //       }
     }
     // MARK: table functions
     private func getTableData() {
-        let DAYS_TO_CHECKIN = 1
+        mDaysLeft = ANON_CHECKIN_REQUIRED
         mCheckIns = []
         let checkins = CheckInTable.get(db: mDBT, filter: CheckInTable.ID == CheckInTable.ID, orderby: [CheckInTable.C_DATE + " desc"])
         //  The above won't include all the missed checkins
         //  Therefore we will copy the array.
         // First copy existing
         if let checkinFirst = checkins.first {
-            mDaysLeft = DAYS_TO_CHECKIN
+   
             var prevDate = CheckInController.getCalDate(date: checkinFirst.date)
             for checkin in checkins {
                 let currDate = CheckInController.getCalDate(date: checkin.date)
@@ -107,7 +107,7 @@ class AnonCheckListController: UIViewController, UITableViewDelegate, UITableVie
                     check.status = CheckInController.CHECKIN_MISSED
                     mCheckIns.append(check)
                     prevDate = Calendar.current.date(byAdding: .day, value: 1, to: prevDate)!
-                    mDaysLeft = DAYS_TO_CHECKIN
+                    mDaysLeft = ANON_CHECKIN_REQUIRED
                 }
                 mCheckIns.append(checkin)
                 prevDate = Calendar.current.date(byAdding: .day, value: 1, to: prevDate)!
@@ -183,37 +183,11 @@ class AnonCheckListController: UIViewController, UITableViewDelegate, UITableVie
             
         }
         return cell
+    }
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        cell.backgroundColor = .clear
         
     }
-    
-/*    Don't need all this
-     func tableView(_ tableView: UITableView, didSelectRowAt: IndexPath) {
-        //let cell = tableView.cellForRow(at: didSelectRowAt)
-        //cell?.accessoryType = .checkmark
-        if didSelectRowAt.row == 0 {
-
-            
-        }
-        
-    }
-    func tableView(_ tableView: UITableView, didDeselectRowAt: IndexPath) {
-        //let cell = tableView.cellForRow(at: didDeselectRowAt)
-        //cell?.accessoryType = .none
-        
-    }
-*/
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation */
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-        print ("getting segue")
-    }
-    
-
 }
 class AnonCheckCell: UITableViewCell {
     @IBOutlet weak var lblDate: UILabel!

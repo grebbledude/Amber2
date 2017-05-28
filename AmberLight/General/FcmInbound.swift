@@ -52,8 +52,8 @@ class FCMInbound  {
             let dbt = DBTables()
             let actionString = payload[FcmMessageKey.ACTION.rawValue]!
             let action = FcmMessageAction(rawValue: actionString)!
+            LogWriter.write(text: "Inbound: \(action)")
             if checkForInvalid(action: action, status: status) {
-                print ("Received an action out of sequence? \(status) \(action)")
                 let message = MessageTable()
                 if let msgId = FCMInbound.mSaveId {
                     FCMInbound.mSaveId = msgId + 1
@@ -64,27 +64,28 @@ class FCMInbound  {
                 message.setData(payload: payload)
                 message.action = actionString
                 _ = message.insert(db: dbt)
+                LogWriter.write(text: "Inbound message deferred")
             } else {
                 processData(payload: payload, dbt: dbt, action: action)
-                var messages = MessageTable.getAll(db: dbt)
-                var changed = true
-                while changed && messages.count > 0 {
-                    changed = false
-                    var remaining: [MessageTable] = []
-                    for message in messages {
-                        let payload = message.getPayload()
-                        if checkForInvalid(action: action, status: status) {
-                            print ("Received an action still out of sequence? \(status) \(action)")
-                            remaining.append(message)
-                        } else {
-                            print ("Caught up \(status) \(message.action)")
-                            changed = true
-                            message.delete(db: dbt)
-                            processData(payload: payload, dbt: dbt, action: action)
-                        }
+            }
+            var messages = MessageTable.getAll(db: dbt)
+            var changed = true
+            while changed && messages.count > 0 {
+                changed = false
+                var remaining: [MessageTable] = []
+                for message in messages {
+                    let payload = message.getPayload()
+                    if checkForInvalid(action: action, status: status) {
+                        remaining.append(message)
+                    } else {
+                        LogWriter.write(text: "Deferred: \(message.action)")
+                        changed = true
+                        message.delete(db: dbt)
+                        processData(payload: payload, dbt: dbt, action: action)
                     }
-                    messages = remaining
                 }
+                messages = remaining
+                
             }
             
 
@@ -113,11 +114,11 @@ class FCMInbound  {
     }
 
     private func processData(payload payloadIn: [String:String]?, dbt: DBTables, action: FcmMessageAction) {
-        print ("processing inbound")
+
         if let payload = payloadIn {
             let actionString = payload[FcmMessageKey.ACTION.rawValue]!
             let action = FcmMessageAction(rawValue: actionString)!
-            print ("Inbound Action " + actionString)
+
             switch (action) {
             case .ACT_REG_INVALID:
                 processActRegInvalid(payload: payload, dbt: dbt)
@@ -200,6 +201,9 @@ class FCMInbound  {
             case .ACT_BOUNCE:
                 FcmMessage.builder(action: .ACT_BOUNCE).send()
                 return
+            case .ACT_SHOW_LOG:
+                MyPrefs.setPref(preference: MyPrefs.SHOW_LOG, value: true)
+                return
             default:
                 return
             }
@@ -226,7 +230,6 @@ class FCMInbound  {
         else {
             MyPrefs.setPref(preference:  MyPrefs.CURRENT_STATUS, value: MyPrefs.STATUS_REG_OK)
         }
-        QuestionListController.sendResponse(dayno: 0, dbt: dbt)
     }
     
     private func processActTLAssign(payload: [String: String], dbt: DBTables) {
@@ -240,9 +243,9 @@ class FCMInbound  {
         else {
             MyPrefs.setPref(preference:  MyPrefs.CURRENT_STATUS, value: MyPrefs.STATUS_REG_TL_ASS)
         }
-        UnfinishStuff.timers()
-       // AlarmReceiver.setTimer(this)
-        //TODO - notification
+ //       NotificationHandler.setTimer()  // Not sure this is allowed
+        QuestionListController.sendResponse(dayno: 0, dbt: dbt)   // Send answers to initial questions
+
     }
     
     private func processActTLConfirmed(payload: [String: String], dbt: DBTables) {
@@ -268,6 +271,7 @@ class FCMInbound  {
         else {
             groupTable!.update(db: dbt)
         }
+        NotificationHandler.setTimer()  // Not sure this is allowed
     }
     
     private func processActSendResponse(payload: [String: String], dbt: DBTables) {
@@ -281,13 +285,11 @@ class FCMInbound  {
         let numEntries = Int(payload[FcmMessageKey.NUM_ENTRIES.rawValue]!)
         response.responseDate = Int(payload[FcmMessageKey.DATE.rawValue]!)
         response.personid = payload[FcmMessageKey.PERSON_ID.rawValue]
-        print ("found personid for answers" + response.personid!)
         for i  in 0...(numEntries! - 1) {
             response.answer = payload["\(FcmMessageKey.ANSWER.rawValue)\(i)"]
             response.question = payload["\(FcmMessageKey.QUESTION.rawValue)\(i)"]
             response.id = response.personid + "D" + String(response.dayno) + "E" + String(i)
             let _ = response.insert(db: dbt)
-            print("FCM Inbound" + "Answer received " + response.id)
         }
     }
     private func processActBecomeTeamLead(payload: [String: String], dbt: DBTables) {
@@ -299,8 +301,8 @@ class FCMInbound  {
         let tlkey = payload[FcmMessageKey.TLKEY.rawValue]
         MyPrefs.setPref(preference:  MyPrefs.TL_KEY, value: tlkey!)
 
-        FIRMessaging.messaging().subscribe(toTopic: "/topics/" + congregation!)
-        FIRMessaging.messaging().subscribe(toTopic: "/topics/" + congregation! + "ios")
+        Messaging.messaging().subscribe(toTopic: "/topics/" + congregation!)
+        Messaging.messaging().subscribe(toTopic: "/topics/" + congregation! + "ios")
         //FirebaseMessaging.getInstance().subscribeToTopic(congregation)
     }
     private func processActGroupAssign(payload: [String: String], dbt: DBTables) {
@@ -315,26 +317,20 @@ class FCMInbound  {
         MyPrefs.setPref(preference:  MyPrefs.STARTDATE, value: Int(payload[FcmMessageKey.STARTDATE.rawValue]!)!)
   //      UnfinishStuff.subscribe()
         let congregation = MyPrefs.getPrefString(preference: MyPrefs.CONGREGATION)
-        FIRMessaging.messaging().subscribe(toTopic: "/topics/" + groupId!)
+        Messaging.messaging().subscribe(toTopic: "/topics/" + groupId!)
     
-        FIRMessaging.messaging().subscribe(toTopic: "/topics/" + groupId! + "ios")
-        FIRMessaging.messaging().subscribe(toTopic: "/topics/" + congregation)
+        Messaging.messaging().subscribe(toTopic: "/topics/" + groupId! + "ios")
+        Messaging.messaging().subscribe(toTopic: "/topics/" + congregation)
   //      FirebaseMessaging.getInstance().subscribeToTopic(MyPrefs.getPreferenceString(this,MyPrefs.CONGREGATION))
   //      AlarmReceiver.setTimer(this)  // set reminders
     }
     private func processActNewUnlockCode(payload: [String: String], dbt: DBTables) {
         MyPrefs.setPref(preference:  MyPrefs.LOCKCODE, value: payload[FcmMessageKey.LOCKCODE.rawValue]!)
-        UnfinishStuff.notification()
-//        Intent serviceIntent = new Intent(this, PopupAlertService.class)
-//        serviceIntent.setAction(PopupAlertService.ACT_LOCKCODE)
-//        startService(serviceIntent)
+       // We haven't written the other end of this yet
     }
     private func processActPray(payload: [String: String], dbt: DBTables) {
-        UnfinishStuff.notification()
-  //      Intent serviceIntent = Intent(this, PopupAlertService.class)
-   //     serviceIntent.setAction(PopupAlertService.ACT_PRAY)
-   //     serviceIntent.putExtra(FcmMessage.PSEUDONYM, payload[FcmMessage.PSEUDONYM])
-   //     startService(serviceIntent)
+      // This is just a notification
+        
     }
     private func processActPanic(payload: [String: String], dbt: DBTables) {
     //    let serviceIntent = Intent(this, PopupAlertService.class)
@@ -345,10 +341,7 @@ class FCMInbound  {
         event.text = pseudonym! + " : " + payload[FcmMessageKey.TEXT.rawValue]!
         event.type = EventTable.TYPE_PANIC
         let _ = event.insert(db: dbt)
-        UnfinishStuff.notification()
-  //      serviceIntent.setAction(PopupAlertService.ACT_PRAY)
-  //      serviceIntent.putExtra(FcmMessage.PSEUDONYM, payload[FcmMessage.PSEUDONYM])
-  //      startService(serviceIntent)
+
     }
     private func processActDailySummary(payload: [String: String], dbt: DBTables) {
         let group = payload[FcmMessageKey.GROUP_ID.rawValue]
@@ -402,8 +395,8 @@ class FCMInbound  {
             let _ = checkin.insert(db: dbt)
             
         }
-        FIRMessaging.messaging().subscribe(toTopic: "/topics/" + groupId + "ios")
-        FIRMessaging.messaging().subscribe(toTopic: "/topics/" + congregation)
+        Messaging.messaging().subscribe(toTopic: "/topics/" + groupId + "ios")
+        Messaging.messaging().subscribe(toTopic: "/topics/" + congregation)
         
         //  QuestionListController.sendResponse(dayno: 0, dbt: dbt)  will not do this at the moment.
         //  sine we have nowhere to send the responses to.
@@ -474,7 +467,6 @@ class FCMInbound  {
         MyPrefs.setPref(preference: MyPrefs.NUM_PEOPLE_TS, value: Float64(Date().timeIntervalSinceReferenceDate))
         if let vc = UIWindow.visibleViewController(from: UIApplication.shared.keyWindow?.rootViewController) as? TeamLeadController{
             vc.reloadPicker()
-            print ("refreshing")
         }
     }
     private func processFoundTL(payload: [String: String], dbt: DBTables) {
@@ -492,14 +484,7 @@ class FCMInbound  {
         if version == MyPrefs.getPrefString(preference: MyPrefs.QUESTION_VERSION) {
             return  // already processed this file
         }
- //       _ = payload[FcmMessageKey.PATH.rawValue]      This is all for future
- //       _ = payload[FcmMessageKey.FILENAME.rawValue]
-        UnfinishStuff.download()
- //       Intent intent = new Intent(this,DownloadService.class)
- //       intent.putExtra(FcmMessage.FILENAME,fileName)
- //       intent.putExtra(FcmMessage.PATH,path)
- //       intent.putExtra(FcmMessage.VERSION,version)
- //       startService(intent)
+ //       _this is not yet written on the server or tested
     }
     
     private func setPreference(key: String, value: String){
@@ -521,7 +506,7 @@ class FCMInbound  {
             tl.code = "PENDING"
             _ = tl.insert(db: dbt)
             let congregation = MyPrefs.getPrefString(preference: MyPrefs.CONGREGATION)
-            FIRMessaging.messaging().subscribe(toTopic: "/topics/" + congregation)
+            Messaging.messaging().subscribe(toTopic: "/topics/" + congregation)
             
         } else {
             

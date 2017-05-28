@@ -8,6 +8,10 @@
 
 /* Begin PBXBuildFile section */
 		8019DBC0A8B2E09173649918 /* Pods_AmberLightTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1CC1FB0BD855B6B48F36DF5E /* Pods_AmberLightTests.framework */; };
+		D87C813C1ED0705A004A2BC5 /* FirebaseSignon.swift in Sources */ = {isa = PBXBuildFile; fileRef = D87C813B1ED0705A004A2BC5 /* FirebaseSignon.swift */; };
+		D87C813E1ED1FE37004A2BC5 /* EmbededQuestionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D87C813D1ED1FE37004A2BC5 /* EmbededQuestionController.swift */; };
+		D87C81411ED4A2C4004A2BC5 /* LogWriter.swift in Sources */ = {isa = PBXBuildFile; fileRef = D87C81401ED4A2C4004A2BC5 /* LogWriter.swift */; };
+		D87C81431ED4C981004A2BC5 /* LogTableTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D87C81421ED4C981004A2BC5 /* LogTableTableViewController.swift */; };
 		D87F27E21E843E2800CC55EA /* FloatPrayerButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D87F27E11E843E2800CC55EA /* FloatPrayerButton.swift */; };
 		D87F27E41E8698A100CC55EA /* AdminCodeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D87F27E31E8698A000CC55EA /* AdminCodeController.swift */; };
 		D87F27E61E8B9FC200CC55EA /* WaitingController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D87F27E51E8B9FC200CC55EA /* WaitingController.swift */; };
@@ -30,13 +34,10 @@
 		D8B01B721E6CA1D200756092 /* SimplePersonCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8B01B691E6CA1D200756092 /* SimplePersonCell.swift */; };
 		D8B01B731E6CA1D200756092 /* TeamLeadController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8B01B6A1E6CA1D200756092 /* TeamLeadController.swift */; };
 		D8B01B881E6CA20A00756092 /* CheckInController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8B01B7C1E6CA20A00756092 /* CheckInController.swift */; };
-		D8B01B891E6CA20A00756092 /* CheckinDetailCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8B01B7D1E6CA20A00756092 /* CheckinDetailCell.swift */; };
-		D8B01B8A1E6CA20A00756092 /* CheckInHeaderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8B01B7E1E6CA20A00756092 /* CheckInHeaderCell.swift */; };
-		D8B01B8B1E6CA20A00756092 /* LaunchController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8B01B7F1E6CA20A00756092 /* LaunchController.swift */; };
+		D8B01B8B1E6CA20A00756092 /* LaunchControllerToDelete.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8B01B7F1E6CA20A00756092 /* LaunchControllerToDelete.swift */; };
 		D8B01B8C1E6CA20A00756092 /* ListCheckinContoller.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8B01B801E6CA20A00756092 /* ListCheckinContoller.swift */; };
 		D8B01B8D1E6CA20A00756092 /* NotificagtionSettingsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8B01B811E6CA20A00756092 /* NotificagtionSettingsController.swift */; };
 		D8B01B8E1E6CA20A00756092 /* NotificationHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8B01B821E6CA20A00756092 /* NotificationHandler.swift */; };
-		D8B01B8F1E6CA20A00756092 /* ToDeleteNotificationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8B01B831E6CA20A00756092 /* ToDeleteNotificationViewController.swift */; };
 		D8B01B901E6CA20A00756092 /* PanicController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8B01B841E6CA20A00756092 /* PanicController.swift */; };
 		D8B01B911E6CA20A00756092 /* QuestionListController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8B01B851E6CA20A00756092 /* QuestionListController.swift */; };
 		D8B01B921E6CA20A00756092 /* RegistrationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8B01B861E6CA20A00756092 /* RegistrationController.swift */; };
@@ -61,6 +62,13 @@
 		D8B01BBA1E6CA3FC00756092 /* questions.xml in Resources */ = {isa = PBXBuildFile; fileRef = D8B01BB91E6CA3FC00756092 /* questions.xml */; };
 		D8D50B8E1E97F30D00902677 /* MessageTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8D50B8D1E97F30D00902677 /* MessageTable.swift */; };
 		D8D9ED8C1EA69DBC006ED917 /* AdminMasterController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8D9ED8B1EA69DBC006ED917 /* AdminMasterController.swift */; };
+		D8D9ED8E1EAAACEE006ED917 /* NoNotificationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8D9ED8D1EAAACEE006ED917 /* NoNotificationController.swift */; };
+		D8D9ED931EAB7E93006ED917 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8D9ED921EAB7E93006ED917 /* Theme.swift */; };
+		D8D9ED951EAD0B3C006ED917 /* ThemedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8D9ED941EAD0B3C006ED917 /* ThemedViewController.swift */; };
+		D8D9ED981EB47204006ED917 /* PageNumIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8D9ED971EB47204006ED917 /* PageNumIndicator.swift */; };
+		D8D9EDAA1EB7902C006ED917 /* Help.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D8D9EDA91EB7902C006ED917 /* Help.storyboard */; };
+		D8D9EDAD1EB79058006ED917 /* HelpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8D9EDAC1EB79058006ED917 /* HelpViewController.swift */; };
+		D8D9EDB11EBBA5C3006ED917 /* InitialViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8D9EDB01EBBA5C2006ED917 /* InitialViewController.swift */; };
 		D8E58DB71E77D5060014F637 /* ReplaceSegue.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8E58DB61E77D5060014F637 /* ReplaceSegue.swift */; };
 		D8E58DB91E78781D0014F637 /* EncourageController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8E58DB81E78781D0014F637 /* EncourageController.swift */; };
 		D8E58DC21E79F5780014F637 /* Registration.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D8E58DC11E79F5780014F637 /* Registration.storyboard */; };
@@ -153,6 +161,10 @@
 		8D55A0720D0B2B6960F193EA /* Pods-AmberLightTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AmberLightTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-AmberLightTests/Pods-AmberLightTests.release.xcconfig"; sourceTree = "<group>"; };
 		A44A8B5B9DB30B2A5F257F5F /* Pods-AmberLight.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AmberLight.release.xcconfig"; path = "Pods/Target Support Files/Pods-AmberLight/Pods-AmberLight.release.xcconfig"; sourceTree = "<group>"; };
 		C7C258570137B98834CB79F2 /* Pods-AmberLight.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AmberLight.debug.xcconfig"; path = "Pods/Target Support Files/Pods-AmberLight/Pods-AmberLight.debug.xcconfig"; sourceTree = "<group>"; };
+		D87C813B1ED0705A004A2BC5 /* FirebaseSignon.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FirebaseSignon.swift; sourceTree = "<group>"; };
+		D87C813D1ED1FE37004A2BC5 /* EmbededQuestionController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmbededQuestionController.swift; sourceTree = "<group>"; };
+		D87C81401ED4A2C4004A2BC5 /* LogWriter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogWriter.swift; sourceTree = "<group>"; };
+		D87C81421ED4C981004A2BC5 /* LogTableTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogTableTableViewController.swift; sourceTree = "<group>"; };
 		D87F27E11E843E2800CC55EA /* FloatPrayerButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FloatPrayerButton.swift; path = Views/FloatPrayerButton.swift; sourceTree = "<group>"; };
 		D87F27E31E8698A000CC55EA /* AdminCodeController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AdminCodeController.swift; sourceTree = "<group>"; };
 		D87F27E51E8B9FC200CC55EA /* WaitingController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WaitingController.swift; sourceTree = "<group>"; };
@@ -181,13 +193,10 @@
 		D8B01B691E6CA1D200756092 /* SimplePersonCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SimplePersonCell.swift; sourceTree = "<group>"; };
 		D8B01B6A1E6CA1D200756092 /* TeamLeadController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TeamLeadController.swift; sourceTree = "<group>"; };
 		D8B01B7C1E6CA20A00756092 /* CheckInController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CheckInController.swift; sourceTree = "<group>"; };
-		D8B01B7D1E6CA20A00756092 /* CheckinDetailCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CheckinDetailCell.swift; sourceTree = "<group>"; };
-		D8B01B7E1E6CA20A00756092 /* CheckInHeaderCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CheckInHeaderCell.swift; sourceTree = "<group>"; };
-		D8B01B7F1E6CA20A00756092 /* LaunchController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LaunchController.swift; sourceTree = "<group>"; };
+		D8B01B7F1E6CA20A00756092 /* LaunchControllerToDelete.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LaunchControllerToDelete.swift; sourceTree = "<group>"; };
 		D8B01B801E6CA20A00756092 /* ListCheckinContoller.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListCheckinContoller.swift; sourceTree = "<group>"; };
 		D8B01B811E6CA20A00756092 /* NotificagtionSettingsController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificagtionSettingsController.swift; sourceTree = "<group>"; };
 		D8B01B821E6CA20A00756092 /* NotificationHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationHandler.swift; sourceTree = "<group>"; };
-		D8B01B831E6CA20A00756092 /* ToDeleteNotificationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ToDeleteNotificationViewController.swift; sourceTree = "<group>"; };
 		D8B01B841E6CA20A00756092 /* PanicController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PanicController.swift; sourceTree = "<group>"; };
 		D8B01B851E6CA20A00756092 /* QuestionListController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QuestionListController.swift; sourceTree = "<group>"; };
 		D8B01B861E6CA20A00756092 /* RegistrationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegistrationController.swift; sourceTree = "<group>"; };
@@ -197,11 +206,11 @@
 		D8B01B971E6CA22400756092 /* DBConnection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DBConnection.swift; sourceTree = "<group>"; };
 		D8B01B981E6CA22400756092 /* DBTables.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DBTables.swift; sourceTree = "<group>"; };
 		D8B01B991E6CA22400756092 /* EventTable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventTable.swift; sourceTree = "<group>"; };
-		D8B01B9A1E6CA22400756092 /* GenericExrtras.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GenericExrtras.swift; sourceTree = "<group>"; };
+		D8B01B9A1E6CA22400756092 /* GenericExrtras.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = GenericExrtras.swift; path = Tables/GenericExrtras.swift; sourceTree = "<group>"; };
 		D8B01B9B1E6CA22400756092 /* GroupTable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GroupTable.swift; sourceTree = "<group>"; };
 		D8B01B9C1E6CA22400756092 /* PersonTable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PersonTable.swift; sourceTree = "<group>"; };
-		D8B01B9D1E6CA22400756092 /* QuestionMultipleController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QuestionMultipleController.swift; sourceTree = "<group>"; };
-		D8B01B9E1E6CA22400756092 /* QuestionSingleController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QuestionSingleController.swift; sourceTree = "<group>"; };
+		D8B01B9D1E6CA22400756092 /* QuestionMultipleController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = QuestionMultipleController.swift; path = ../Tables/QuestionMultipleController.swift; sourceTree = "<group>"; };
+		D8B01B9E1E6CA22400756092 /* QuestionSingleController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = QuestionSingleController.swift; path = ../Tables/QuestionSingleController.swift; sourceTree = "<group>"; };
 		D8B01B9F1E6CA22400756092 /* QuestionTable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QuestionTable.swift; sourceTree = "<group>"; };
 		D8B01BA01E6CA22400756092 /* ResponseTable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResponseTable.swift; sourceTree = "<group>"; };
 		D8B01BA11E6CA22400756092 /* TeamLeadTable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TeamLeadTable.swift; sourceTree = "<group>"; };
@@ -212,6 +221,13 @@
 		D8B01BB91E6CA3FC00756092 /* questions.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = questions.xml; sourceTree = "<group>"; };
 		D8D50B8D1E97F30D00902677 /* MessageTable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageTable.swift; sourceTree = "<group>"; };
 		D8D9ED8B1EA69DBC006ED917 /* AdminMasterController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AdminMasterController.swift; sourceTree = "<group>"; };
+		D8D9ED8D1EAAACEE006ED917 /* NoNotificationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NoNotificationController.swift; sourceTree = "<group>"; };
+		D8D9ED921EAB7E93006ED917 /* Theme.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
+		D8D9ED941EAD0B3C006ED917 /* ThemedViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThemedViewController.swift; sourceTree = "<group>"; };
+		D8D9ED971EB47204006ED917 /* PageNumIndicator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PageNumIndicator.swift; sourceTree = "<group>"; };
+		D8D9EDA91EB7902C006ED917 /* Help.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Help.storyboard; sourceTree = "<group>"; };
+		D8D9EDAC1EB79058006ED917 /* HelpViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = HelpViewController.swift; path = Help/HelpViewController.swift; sourceTree = "<group>"; };
+		D8D9EDB01EBBA5C2006ED917 /* InitialViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InitialViewController.swift; sourceTree = "<group>"; };
 		D8E58DB61E77D5060014F637 /* ReplaceSegue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ReplaceSegue.swift; path = General/ReplaceSegue.swift; sourceTree = "<group>"; };
 		D8E58DB81E78781D0014F637 /* EncourageController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EncourageController.swift; sourceTree = "<group>"; };
 		D8E58DC11E79F5780014F637 /* Registration.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Registration.storyboard; sourceTree = "<group>"; };
@@ -288,6 +304,7 @@
 			isa = PBXGroup;
 			children = (
 				D87F27E11E843E2800CC55EA /* FloatPrayerButton.swift */,
+				D8D9ED971EB47204006ED917 /* PageNumIndicator.swift */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -319,12 +336,14 @@
 		D8B01AE81E6C970A00756092 /* AmberLight */ = {
 			isa = PBXGroup;
 			children = (
+				D8D9EDAB1EB79048006ED917 /* Help */,
 				D8E9A31C1E6CB3B400A9308B /* AmberLight.entitlements */,
 				D8B01B941E6CA22400756092 /* Tables */,
 				D8B01B7B1E6CA20A00756092 /* Client */,
 				D8B01B611E6CA1D200756092 /* Maintenance */,
 				D8B01B371E6C9F3B00756092 /* General */,
 				D8B01AF01E6C970A00756092 /* Assets.xcassets */,
+				D8D9EDA91EB7902C006ED917 /* Help.storyboard */,
 				D8B01AF21E6C970A00756092 /* LaunchScreen.storyboard */,
 				D8B01AF51E6C970A00756092 /* Info.plist */,
 				D8B01BB11E6CA2D400756092 /* GoogleService-Info.plist */,
@@ -360,6 +379,7 @@
 			children = (
 				D8B01BAF1E6CA29700756092 /* MyPrefs.swift */,
 				D8B01B391E6C9FF200756092 /* DebugController.swift */,
+				D8B01B9A1E6CA22400756092 /* GenericExrtras.swift */,
 				D8B01B3A1E6C9FF200756092 /* FcmInbound.swift */,
 				D8B01B3B1E6C9FF200756092 /* FcmMessage.swift */,
 				D8B01B3C1E6C9FF200756092 /* LockController.swift */,
@@ -368,6 +388,13 @@
 				D8E9A3681E6F3E4000A9308B /* InitialInstructionsPageControllerViewController.swift */,
 				D8E9A3711E6F6C0100A9308B /* InitialTextViewController.swift */,
 				D8E58DB61E77D5060014F637 /* ReplaceSegue.swift */,
+				D8D9ED921EAB7E93006ED917 /* Theme.swift */,
+				D8D9ED941EAD0B3C006ED917 /* ThemedViewController.swift */,
+				D8D9EDB01EBBA5C2006ED917 /* InitialViewController.swift */,
+				D87C813B1ED0705A004A2BC5 /* FirebaseSignon.swift */,
+				D87C813D1ED1FE37004A2BC5 /* EmbededQuestionController.swift */,
+				D87C81401ED4A2C4004A2BC5 /* LogWriter.swift */,
+				D87C81421ED4C981004A2BC5 /* LogTableTableViewController.swift */,
 			);
 			name = General;
 			sourceTree = "<group>";
@@ -395,13 +422,12 @@
 			children = (
 				D87F27D91E843DCC00CC55EA /* Views */,
 				D8B01B7C1E6CA20A00756092 /* CheckInController.swift */,
-				D8B01B7D1E6CA20A00756092 /* CheckinDetailCell.swift */,
-				D8B01B7E1E6CA20A00756092 /* CheckInHeaderCell.swift */,
-				D8B01B7F1E6CA20A00756092 /* LaunchController.swift */,
+				D8B01B7F1E6CA20A00756092 /* LaunchControllerToDelete.swift */,
+				D8B01B9E1E6CA22400756092 /* QuestionSingleController.swift */,
+				D8B01B9D1E6CA22400756092 /* QuestionMultipleController.swift */,
 				D8B01B801E6CA20A00756092 /* ListCheckinContoller.swift */,
 				D8B01B811E6CA20A00756092 /* NotificagtionSettingsController.swift */,
 				D8B01B821E6CA20A00756092 /* NotificationHandler.swift */,
-				D8B01B831E6CA20A00756092 /* ToDeleteNotificationViewController.swift */,
 				D8B01B841E6CA20A00756092 /* PanicController.swift */,
 				D8B01B851E6CA20A00756092 /* QuestionListController.swift */,
 				D8B01B861E6CA20A00756092 /* RegistrationController.swift */,
@@ -413,6 +439,7 @@
 				D8E58DDB1E7D4B180014F637 /* ListRequestController.swift */,
 				D87F27E31E8698A000CC55EA /* AdminCodeController.swift */,
 				D87F27E51E8B9FC200CC55EA /* WaitingController.swift */,
+				D8D9ED8D1EAAACEE006ED917 /* NoNotificationController.swift */,
 			);
 			path = Client;
 			sourceTree = "<group>";
@@ -425,11 +452,8 @@
 				D8B01B971E6CA22400756092 /* DBConnection.swift */,
 				D8B01B981E6CA22400756092 /* DBTables.swift */,
 				D8B01B991E6CA22400756092 /* EventTable.swift */,
-				D8B01B9A1E6CA22400756092 /* GenericExrtras.swift */,
 				D8B01B9B1E6CA22400756092 /* GroupTable.swift */,
 				D8B01B9C1E6CA22400756092 /* PersonTable.swift */,
-				D8B01B9D1E6CA22400756092 /* QuestionMultipleController.swift */,
-				D8B01B9E1E6CA22400756092 /* QuestionSingleController.swift */,
 				D8B01B9F1E6CA22400756092 /* QuestionTable.swift */,
 				D8B01BA01E6CA22400756092 /* ResponseTable.swift */,
 				D8B01BA11E6CA22400756092 /* TeamLeadTable.swift */,
@@ -437,6 +461,14 @@
 				D8D50B8D1E97F30D00902677 /* MessageTable.swift */,
 			);
 			path = Tables;
+			sourceTree = "<group>";
+		};
+		D8D9EDAB1EB79048006ED917 /* Help */ = {
+			isa = PBXGroup;
+			children = (
+				D8D9EDAC1EB79058006ED917 /* HelpViewController.swift */,
+			);
+			name = Help;
 			sourceTree = "<group>";
 		};
 		D8E9A3491E6DF44F00A9308B /* Products */ = {
@@ -649,6 +681,7 @@
 				D8B01AF11E6C970A00756092 /* Assets.xcassets in Resources */,
 				D8E58DD81E7C91B30014F637 /* Checkin.storyboard in Resources */,
 				D8B01BB41E6CA2E900756092 /* Maintenance.storyboard in Resources */,
+				D8D9EDAA1EB7902C006ED917 /* Help.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -831,18 +864,24 @@
 				D8B01BB01E6CA29700756092 /* MyPrefs.swift in Sources */,
 				D8B01B8E1E6CA20A00756092 /* NotificationHandler.swift in Sources */,
 				D8B01BA31E6CA22400756092 /* CheckInTable.swift in Sources */,
+				D87C81431ED4C981004A2BC5 /* LogTableTableViewController.swift in Sources */,
 				D8E58DDC1E7D4B180014F637 /* ListRequestController.swift in Sources */,
+				D8D9EDAD1EB79058006ED917 /* HelpViewController.swift in Sources */,
 				D87F27E41E8698A100CC55EA /* AdminCodeController.swift in Sources */,
 				D8B01BA81E6CA22400756092 /* GroupTable.swift in Sources */,
 				D8D50B8E1E97F30D00902677 /* MessageTable.swift in Sources */,
 				D8E58DD41E7A8AD00014F637 /* AnonPanicController.swift in Sources */,
 				D8E58DD61E7B4E300014F637 /* RespondController.swift in Sources */,
 				D8B01BA41E6CA22400756092 /* DBConnection.swift in Sources */,
+				D8D9EDB11EBBA5C3006ED917 /* InitialViewController.swift in Sources */,
 				D8E9A3721E6F6C0100A9308B /* InitialTextViewController.swift in Sources */,
 				D8B01B6E1E6CA1D200756092 /* ListGroupController.swift in Sources */,
 				D8E8A7621E9C28D600C2903C /* ListPersonController.swift in Sources */,
 				D8B01B721E6CA1D200756092 /* SimplePersonCell.swift in Sources */,
+				D87C81411ED4A2C4004A2BC5 /* LogWriter.swift in Sources */,
+				D8D9ED8E1EAAACEE006ED917 /* NoNotificationController.swift in Sources */,
 				D8B01B401E6C9FF200756092 /* FcmInbound.swift in Sources */,
+				D87C813E1ED1FE37004A2BC5 /* EmbededQuestionController.swift in Sources */,
 				D8B01B911E6CA20A00756092 /* QuestionListController.swift in Sources */,
 				D8B01B901E6CA20A00756092 /* PanicController.swift in Sources */,
 				D8B01B711E6CA1D200756092 /* PersonTableViewCell.swift in Sources */,
@@ -852,11 +891,11 @@
 				D8B01B8C1E6CA20A00756092 /* ListCheckinContoller.swift in Sources */,
 				D8B01B731E6CA1D200756092 /* TeamLeadController.swift in Sources */,
 				D8B01B8D1E6CA20A00756092 /* NotificagtionSettingsController.swift in Sources */,
-				D8B01B8F1E6CA20A00756092 /* ToDeleteNotificationViewController.swift in Sources */,
+				D8D9ED951EAD0B3C006ED917 /* ThemedViewController.swift in Sources */,
 				D8B01B441E6C9FF200756092 /* UnfinishStuff.swift in Sources */,
+				D8D9ED981EB47204006ED917 /* PageNumIndicator.swift in Sources */,
 				D8E58DB71E77D5060014F637 /* ReplaceSegue.swift in Sources */,
 				D8B01B921E6CA20A00756092 /* RegistrationController.swift in Sources */,
-				D8B01B8A1E6CA20A00756092 /* CheckInHeaderCell.swift in Sources */,
 				D8B01B6D1E6CA1D200756092 /* GroupTableViewCell.swift in Sources */,
 				D8B01B931E6CA20A00756092 /* XMLReader.swift in Sources */,
 				D8B01B3F1E6C9FF200756092 /* DebugController.swift in Sources */,
@@ -866,7 +905,7 @@
 				D8D9ED8C1EA69DBC006ED917 /* AdminMasterController.swift in Sources */,
 				D8B01B431E6C9FF200756092 /* ReadQuestions.swift in Sources */,
 				D8B01B421E6C9FF200756092 /* LockController.swift in Sources */,
-				D8B01B891E6CA20A00756092 /* CheckinDetailCell.swift in Sources */,
+				D87C813C1ED0705A004A2BC5 /* FirebaseSignon.swift in Sources */,
 				D8B01BB61E6CA30900756092 /* AppDelegate.swift in Sources */,
 				D8B01BAC1E6CA22400756092 /* QuestionTable.swift in Sources */,
 				D8B01BA61E6CA22400756092 /* EventTable.swift in Sources */,
@@ -875,7 +914,8 @@
 				D8B01BAB1E6CA22400756092 /* QuestionSingleController.swift in Sources */,
 				D8E58DDA1E7D12B70014F637 /* RequestTable.swift in Sources */,
 				D8E9A3691E6F3E4000A9308B /* InitialInstructionsPageControllerViewController.swift in Sources */,
-				D8B01B8B1E6CA20A00756092 /* LaunchController.swift in Sources */,
+				D8D9ED931EAB7E93006ED917 /* Theme.swift in Sources */,
+				D8B01B8B1E6CA20A00756092 /* LaunchControllerToDelete.swift in Sources */,
 				D8E9A3761E75B87200A9308B /* RequestAdminController.swift in Sources */,
 				D8B01BAD1E6CA22400756092 /* ResponseTable.swift in Sources */,
 				D8B01BAE1E6CA22400756092 /* TeamLeadTable.swift in Sources */,

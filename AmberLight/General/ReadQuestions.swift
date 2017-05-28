@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import FirebaseCrash
 class ReadQuestions:  NSObject,XMLParserDelegate {
     
 //    private var parser = XMLParser()
@@ -37,11 +38,10 @@ class ReadQuestions:  NSObject,XMLParserDelegate {
         parser.parse()
     }
     func parserDidStartDocument(_ parser: XMLParser) {
-        print ("started")
+
     }
     
     func parser(_ parser: XMLParser, didStartElement elementName: String, namespaceURI: String?, qualifiedName qName: String?, attributes attributeDict: [String : String]) {
-        print(" parse start \(elementName)")
         switch elementName {
         case "question":
             if let number = attributeDict["number"]{
@@ -57,16 +57,15 @@ class ReadQuestions:  NSObject,XMLParserDelegate {
     }
     
     func parser(_ parser: XMLParser, foundCharacters string: String) {
-        print(" parse found \(string)")
+
 //        itemName?.append(string)
     }
     func parser(_ parser: XMLParser, didEndElement elementName: String, namespaceURI: String?, qualifiedName qName: String?) {
-        print(" parse end \(elementName)")
-        print(" parse end \(qName!)")
-        print(" parse end \(namespaceURI!)")
-        print ("Question \(qNo) Answer \(aNo) text \(aText) element \(elementName)")
+
     }
     func parser(_: XMLParser, parseErrorOccurred: Error) {
-        print ("Error found" + parseErrorOccurred.localizedDescription)
+        FirebaseCrashMessage("Questions is invalid \(parseErrorOccurred.localizedDescription)")
+        
+        fatalError()
     }
 }
